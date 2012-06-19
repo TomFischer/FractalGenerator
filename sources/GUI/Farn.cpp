@@ -31,9 +31,7 @@
 
 Farn::Farn ( size_t width, size_t height,
 		Point2D p0, Point2D p1 )
-      : Fractal ( p0, p1,
-                  /*Point<double, 2> (-0.5, 0.0), Point<double, 2> (0.5, 1.0),*/
-                  height, width, 100, std::string ("Farn") ),
+      : Fractal ( p0, p1, height, width, 100, std::string ("Farn") ),
       a (4), b(4), c(4), d(4), e(4), f(4), p(4)
 {
    /*
@@ -109,6 +107,6 @@ void Farn::createFractal ( )
       ys = size_t (dy * (ymax - y) / (ymax - ymin));
 
 
-      matrix (ys, xs) = 20;
+      matrix (ys, xs) = k*20;
    }
 }

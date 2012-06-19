@@ -59,6 +59,7 @@ protected:
    void dummy ();
    void addMandelbrotSet ();
    void addJuliaSet ();
+   void onCreateFarn();
    void onClose ();
    void onQuit ();
    void history ();

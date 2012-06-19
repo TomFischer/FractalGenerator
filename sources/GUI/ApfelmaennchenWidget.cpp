@@ -176,28 +176,22 @@ PointInputDlg& ApfelmaennchenWidget::getPointInputDlg ( unsigned point )
    else return right_upper_input_dlg;
 }
 
-void ApfelmaennchenWidget::onCoordinateChanged (
-   unsigned dim, unsigned x, unsigned y )
+void ApfelmaennchenWidget::onCoordinateChanged(unsigned dim, unsigned x, unsigned y)
 {
-	Point2D const &p0 (viewer_widget.getFractal()->getFirstPoint ());
-	Point2D const &p1 (viewer_widget.getFractal()->getSecondPoint ());
+	Point2D const &p0(viewer_widget.getFractal()->getFirstPoint());
+	Point2D const &p1(viewer_widget.getFractal()->getSecondPoint());
 
-   unsigned width  = (viewer_widget.getCanvas())->getWidth ();
-   unsigned height = (viewer_widget.getCanvas())->getHeight();
+	const unsigned width ((viewer_widget.getCanvas())->getWidth());
+	const unsigned height ((viewer_widget.getCanvas())->getHeight());
+	const double dy = ((p1[0] - p0[0]) * y) / width + p0[0];
+	const double dx = ((p1[1] - p0[1]) * x) / height + p0[1];
 
-   double dy = ((p1[0] - p0[0]) * y) / width;
-   dy += p0[0];
+	getPointInputDlg(dim).setCoordinate(0, dy);
+	getPointInputDlg(dim).setCoordinate(1, dx);
 
-   double dx = ((p1[1] - p0[1]) * x) / height;
-   dx += p0[1];
-
-   getPointInputDlg (dim).setCoordinate(0, dy);
-   getPointInputDlg (dim).setCoordinate(1, dx);
-
-   std::cout << "Button pressed at (" << dy << "," << dx << ")";
-   std::cout << std::endl;
+	std::cout << "Button pressed at (" << dy << "," << dx << ")";
+	std::cout << std::endl;
 }
-
 
 guint8* ApfelmaennchenWidget::getData()
 {

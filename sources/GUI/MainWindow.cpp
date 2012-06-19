@@ -28,6 +28,7 @@
 #include "MainWindow.h"
 #include "Point.h"
 #include "JuliaSet.h"
+#include "Farn.h"
 #include <iostream>
 
 MainWindow::MainWindow ()
@@ -51,7 +52,7 @@ MainWindow::MainWindow ()
       menu_list.push_back(
          Gtk::Menu_Helpers::MenuElem("Create _Farn",
                                      Gtk::AccelKey("<control>f"),
-                                     sigc::mem_fun (*this, &MainWindow::dummy) ) );
+                                     sigc::mem_fun (*this, &MainWindow::onCreateFarn) ) );
 
       menu_list.push_back ( Gtk::Menu_Helpers::SeparatorElem ()	);
       menu_list.push_back(
@@ -67,8 +68,6 @@ MainWindow::MainWindow ()
                                   Gtk::AccelKey("<control>q"),
                                   sigc::mem_fun(*this, &MainWindow::onQuit) ) );
 
-   //sigc::mem_fun(*this, &MainWindow::history) ) );
-
    main_menu_bar.items().push_front(
       Gtk::Menu_Helpers::MenuElem("_Create Fractal",
                                   Gtk::AccelKey ("<alt>c"),
@@ -77,8 +76,8 @@ MainWindow::MainWindow ()
    vbox.pack_start ( main_menu_bar, false, false );
    vbox.pack_start ( notebook, false, false );
 
-   int screen_width(get_screen()->get_width());
-   int screen_height(get_screen()->get_height());
+   const int screen_width(get_screen()->get_width());
+   const int screen_height(get_screen()->get_height());
 
    set_size_request ( 0.7 * screen_width, 0.6 * screen_height );
 
@@ -129,6 +128,26 @@ void MainWindow::addFractal ( Fractal *fractal )
    std::cout << "ok " << std::endl;
    notebook.show_all ();
 }
+
+void MainWindow::onCreateFarn()
+{
+	double pp0[2] = { -0.5, 0.0 }, pp1[2] = { 0.5, 1.1 };
+	Point2D p0(pp0), p1(pp1);
+
+	int wnd_w, wnd_h;
+	get_size(wnd_w, wnd_h);
+	int quad_size(0.9 * std::min(wnd_w, wnd_h));
+
+	Fractal *fractal(new Farn(quad_size, quad_size, p0, p1));
+	vw_list.push_back(new ViewerWidget(fractal, *this));
+	std::list<ViewerWidget*>::iterator it(vw_list.end());
+	it--;
+	std::cout << "notebook: appending page ... " << std::flush;
+	notebook.append_page((*(*it)));
+	std::cout << "ok " << std::endl;
+	notebook.show_all ();
+}
+
 
 void MainWindow::cleanViewerWidgetList ()
 {
