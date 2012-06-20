@@ -48,12 +48,12 @@ public:
    JuliaSet (const Point2D &p0, const Point2D &p1,
               size_t number_x_pix, size_t number_y_pix, size_t max_iterations);
    ~JuliaSet ();
-   void setStartPoint (double x, double y);
+   void setStartPoint (Point2D const &c);
 
 private:
    virtual void createFractal ();
    unsigned iteration (double zn[2]);
-   double *c;
+   Point2D _c;
 };
 
 #endif

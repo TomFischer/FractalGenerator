@@ -55,18 +55,6 @@ Canvas::Canvas ( Glib::RefPtr < Gdk::Pixbuf > apixbuf, ViewerWidget &vw)
 Canvas::~Canvas()
 {}
 
-void Canvas::save ( const std::string &filename, const std::string &type)
-{
-   std::cout << "Canvas::save (" << filename << ")" << std::endl;
-   try {
-      image.get_pixbuf ()->save (filename, type);
-   } catch ( Glib::FileError ) {
-      std::cout << "Fehler beim Speichern in Datei " << filename << std::endl;
-   } catch ( Gdk::PixbufError ) {
-      std::cout << "Fehler Gdk::PixbufError " << std::endl;
-   }
-}
-
 bool Canvas::onMotionNotifyEvent ( GdkEventMotion *event )
 {
    unsigned x = lexical_cast <unsigned> (event->x);
@@ -109,11 +97,12 @@ bool Canvas::onButtonReleaseEvent ( GdkEventButton *event )
       y = y0;
       y0 = temp;
    }
-   viewer_widget.getApfelmaennchenWidget()->onCoordinateChanged (0, x0, y0);
-   if (viewer_widget.getApfelmaennchenWidget())
-      viewer_widget.getApfelmaennchenWidget()->onCoordinateChanged (1, x, y);
-   /*else
-       viewer_widget.getJuliaSetWidget()->onCoordinateChanged (1, x, y);*/
+   if (dynamic_cast<Apfelmaennchen*>(viewer_widget.getFractal())) {
+	   viewer_widget.getApfelmaennchenWidget()->onCoordinateChanged (0, x0, y0);
+	   viewer_widget.getApfelmaennchenWidget()->onCoordinateChanged (1, x, y);
+   } else {
+       viewer_widget.getJuliaSetWidget()->onCoordinateChanged (1, x, y);
+   }
 
    return true;
 }

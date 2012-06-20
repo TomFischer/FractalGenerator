@@ -34,8 +34,7 @@ ViewerWidget::ViewerWidget ( Fractal *afractal, MainWindow &aparent,
       main_menu_bar (), file_menu (), quit_menu (),
       hbox (), vbox (), fractal ( afractal ), canvas ( NULL ),
       mbs_wdgt (NULL), js_wdgt (NULL),
-      save_img_dlg (new Gtk::FileChooserDialog ( "Save fractal",
-                    Gtk::FILE_CHOOSER_ACTION_SAVE )),
+      save_img_dlg (new Gtk::FileChooserDialog ( "Save fractal", Gtk::FILE_CHOOSER_ACTION_SAVE )),
       tof (type),
       hidden (false), ready_to_remove (false)
 {
@@ -237,11 +236,8 @@ void ViewerWidget::onSaveImg ()
 				getData(*tmp_fractal), Gdk::COLORSPACE_RGB, false, 8,
 				tmp_fractal->getCols(), tmp_fractal->getRows(),
 				tmp_fractal->getCols() * 3));
-		Canvas my_canvas(tmp_pixbuf, *this);
-		my_canvas.save(fname, "png");
+		tmp_pixbuf->save (fname, "png");
 		delete tmp_fractal;
-
-		//      canvas->save (fname, "png");
 		break;
 	}
 	case (Gtk::RESPONSE_CANCEL): {
@@ -253,22 +249,6 @@ void ViewerWidget::onSaveImg ()
 		break;
 	}
 	}
-}
-
-void ViewerWidget::onSaveImg2 (unsigned index)
-{
-   std::string fname;
-   if (index < 10)
-      fname += "pictures/dump00";
-   else if (index < 100)
-      fname += "pictures/dump0";
-   else
-      fname += "pictures/dump";
-   char txt[255];
-   sprintf( txt, "%d", index );
-   std::string idx (txt);
-   std::string jpg (".jpg");
-   canvas->save (fname+idx+jpg, "jpeg");
 }
 
 void ViewerWidget::onMovie ()

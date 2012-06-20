@@ -47,7 +47,6 @@ public:
    ViewerWidget ( Fractal *fractal, MainWindow &parent, unsigned type=0 );
    virtual ~ViewerWidget();
    void onSaveImg ();
-   void onSaveImg2 (unsigned index);
    void onMovie ();
    void onNewViewerWidget ();
    void onNewFractal ();

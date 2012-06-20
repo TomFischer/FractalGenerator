@@ -41,7 +41,6 @@ public:
    Canvas ( Glib::RefPtr <Gdk::Pixbuf> pixbuf, ViewerWidget &vw );
    virtual ~Canvas();
    void setImage ( Glib::RefPtr <Gdk::Pixbuf> pixbuf );
-   void save ( const std::string &filename, const std::string &type);
    bool onMotionNotifyEvent ( GdkEventMotion *event );
    bool onButtonPressEvent ( GdkEventButton *event );
    bool onButtonReleaseEvent ( GdkEventButton *event );

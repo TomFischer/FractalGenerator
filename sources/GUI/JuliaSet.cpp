@@ -33,15 +33,15 @@ double fpow (double x, unsigned p)
 
 JuliaSet::JuliaSet (const Point2D &p0, const Point2D &p1,
                     size_t number_x_pix, size_t number_y_pix, size_t max_iterations)
-      : Fractal ( p0, p1, number_x_pix, number_y_pix, max_iterations,
-                  std::string ("Julia Set") ), c(new double[2])
+      : Fractal ( p0, p1, number_x_pix, number_y_pix, max_iterations, std::string ("Julia Set") ),
+        _c()
 {
    // complex number c
+	_c[0] = -0.8;
+	_c[1] = 0.2;
    //c[0] = 0.285; c[1] = 0.013;
    //c[0] = -1.0; c[1] = 1.0;
    //c[0] = -1.0; c[1] = 0.0;
-   c[0] = -0.8;
-   c[1] = 0.2;
    //c[0] = 0.70365; c[1] = 0.2301;
 
    createFractal ();
@@ -50,27 +50,24 @@ JuliaSet::JuliaSet (const Point2D &p0, const Point2D &p1,
 JuliaSet::~JuliaSet ()
 {}
 
+void JuliaSet::setStartPoint(Point2D const& c)
+{
+	_c = c;
+	createFractal();
+}
+
 void JuliaSet::createFractal ( )
 {
-   size_t i0, i1;
-   double c[2];
+   const size_t maxx_pix (matrix.getRows ());
+   const size_t maxy_pix (matrix.getCols ());
 
-   size_t maxx_pix = matrix.getRows ();
-   size_t maxy_pix = matrix.getCols ();
+   const double dx ((p1[0] - p0[0]) / maxx_pix);
+   const double dy ((p1[1] - p0[1]) / maxy_pix);
 
-   double x0 = p0[0];
-   double x1 = p1[0];
-   double dx = (x1 - x0) / maxx_pix;
-
-   double y0 = p0[1];
-   double y1 = p1[1];
-   double dy = (y1 - y0) / maxy_pix;
-
-   for (i0 = 0; i0 < maxx_pix; i0++) {
-      for (i1 = 0; i1 < maxy_pix; i1++) {
-         c[0] = x0 + i0 * dx;
-         c[1] = y0 + i1 * dy;
-         matrix (i0, i1) = iteration (c);
+   for (size_t i0 = 0; i0 < maxx_pix; i0++) {
+      for (size_t i1 = 0; i1 < maxy_pix; i1++) {
+         double zn[2] = {p0[0] + i0 * dx, p0[1] + i1 * dy};
+         matrix (i0, i1) = iteration (zn);
       }
    }
 }
@@ -132,8 +129,8 @@ unsigned JuliaSet::iteration (double zn[2])
    double nrm2 (0.0);
    for (i = 0; (i < max_it) && (nrm2 < 4.0); ++i) {
       // z_{n+1} = z_n^2 + c
-      double real = zn[0] * zn[0] - zn[1] * zn[1] + c[0];
-      double imag = 2 * zn[0] * zn[1] + c[1];
+      double real = zn[0] * zn[0] - zn[1] * zn[1] + _c[0];
+      double imag = 2 * zn[0] * zn[1] + _c[1];
 
       zn[0] = real;
       zn[1] = imag;

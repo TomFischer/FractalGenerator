@@ -161,7 +161,6 @@ void MainWindow::addJuliaSet ()
 {
    // spaeter aus dialog auslesen
    double pp0[2] = {-2.0, -2.0}, pp1[2] = {2.0, 2.0};
-
    Point2D p0 (pp0), p1 (pp1);
 
    int wnd_w, wnd_h;

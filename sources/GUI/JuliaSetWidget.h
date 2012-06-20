@@ -41,9 +41,9 @@
 
 class ViewerWidget;
 
-/**  ApfelmaennchenWidget beinhaltet die Widgets f&uuml;r
+/**  JuliaSetWidget beinhaltet die Widgets f&uuml;r
  * 	 Einstellungensm&ouml;glichkeiten des Fraktals
- * 	 Apfelmaennchen und zeigt diese an.
+ * 	 JuliaSet und zeigt diese an.
  */
 class JuliaSetWidget : public Gtk::VBox
 {

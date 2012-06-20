@@ -84,6 +84,19 @@ public:
 		_coords[coordinate] = data;
 	}
 
+	/** \brief access operator
+	 *  The access to the point coordinates is like the access to a field. Code example:
+	 * \code
+	 * TemplatePoint<double,3> point (1.0, 2.0, 3.0);
+	 * double sqrNrm2 = point[0] * point[0] + point[1] * point[1] + point[2] + point[2];
+	 * \endcode
+	 */
+	COORDINATE_TYPE& operator[](size_t idx)
+	{
+		assert(idx <= DIM);
+		return _coords[idx];
+	}
+
 	/** \brief const access operator
 	 *  The access to the point coordinates is like the access to a field. Code example:
 	 * \code
