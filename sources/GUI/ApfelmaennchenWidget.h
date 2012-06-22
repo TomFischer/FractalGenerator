@@ -37,7 +37,6 @@
 #include <gtkmm/image.h>
 #include <gtkmm/separator.h>
 #include <gtkmm/buttonbox.h>
-#include <gtkmm/colorbutton.h>
 
 #include "Apfelmaennchen.h"
 #include "PointInputDlg.h"
@@ -65,11 +64,6 @@ public:
    PointInputDlg& getPointInputDlg ( unsigned point );
    void onCoordinateChanged ( unsigned dim, unsigned x, unsigned y );
    void update ();
-	 const Gdk::Color getColor (bool start) const 
-	 { 
-	 		if (start) return col0_btn.get_color();
-			else return col1_btn.get_color();
-	 }
 
 private:
    guint8* getData ();
@@ -87,10 +81,6 @@ private:
    Gtk::Table btn_table;
    Gtk::Button apply_btn, new_btn, save_btn, movie_btn;
    Gtk::HSeparator hsep0;
-	 Gtk::ColorButton col0_btn, col1_btn;
-	 Gtk::HButtonBox color_btns;
-   Gtk::Image color_gradient_img;
-   void updateGradient ();
 };
 
 #endif	//APFELMAENNCHENWIDGET_H

@@ -36,7 +36,7 @@
 
 ApfelmaennchenWidget::ApfelmaennchenWidget ( ViewerWidget &vw )
       : Gtk::VBox (), viewer_widget (vw),
-      geometry_box (), color_box (), color_frame ("Color Selection"),
+      geometry_box (),
       left_lower_input_dlg (),
       right_upper_input_dlg (),
       iteration_depth ("number of iterations"),
@@ -72,20 +72,6 @@ ApfelmaennchenWidget::ApfelmaennchenWidget ( ViewerWidget &vw )
 
    pack_start ( geometry_box );
    pack_start (hsep0);
-	 // color model
-	 Gdk::Color init_col ("blue");
-	 col0_btn.set_color (init_col);
-	 color_btns.add (col0_btn);
-	 color_btns.add (col1_btn);
-	 updateGradient ();
-	 color_box.add (color_btns);
-	 color_box.add (color_gradient_img);
-	 color_frame.add (color_box);
-   add ( color_frame );
-   col0_btn.signal_color_set().connect 
-	 		(sigc::mem_fun (this, &ApfelmaennchenWidget::updateGradient ));
-   col1_btn.signal_color_set().connect 
-	 		(sigc::mem_fun (this, &ApfelmaennchenWidget::updateGradient ));
 
    num_iter_box.add (num_iter_label);
    pack_start (hsep0);
@@ -300,33 +286,4 @@ void ApfelmaennchenWidget::update ()
 //	delete [] raw_data;
 }
 
-void ApfelmaennchenWidget::updateGradient ()
-{
-	unsigned rows (10), cols (200), nob (3);
-	guint8 *raw_data (new guint8[rows*cols*nob]);
-
-	Gdk::Color c0(col0_btn.get_color()), c1(col1_btn.get_color());
-	gushort sred(c0.get_red()), ered(c1.get_red()), 
-		sgreen(c0.get_green()), egreen(c1.get_green()), 
-		sblue(c0.get_blue()), eblue(c1.get_blue());
-
-	// color transformations
-	double dred (ered-sred), dgreen(egreen-sgreen), dblue(eblue-sblue);
-
-	for (unsigned r(0); r<rows; ++r) {
-		for (unsigned c(0); c<cols; ++c) {
-			double s ((double)(c)/(double)(cols));
-			unsigned idx ((r*cols+c)*nob);
-			raw_data[idx] = static_cast<guint8> ((sred + s * dred)/65535 * 255);
-			raw_data[idx+1] = static_cast<guint8> ((sgreen + s * dgreen)/65535 * 255);
-			raw_data[idx+2] = static_cast<guint8> ((sblue + s * dblue)/65535 * 255);
-		}
-	}
-
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf (Gdk::Pixbuf::create_from_data(raw_data,
-  	Gdk::COLORSPACE_RGB, false, 8, cols, rows, cols*nob));
-  color_gradient_img.set (pixbuf);
-
-//	delete [] raw_data;
-}
 

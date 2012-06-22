@@ -223,7 +223,7 @@ void MandelbrotSetViewerWidget::onNewViewerWidget()
 
 	// move p1 such that p0 and p1 describes a square
 	if (fabs ((p1[0] - p0[0]) - (p1[1] - p0[0])) < std::numeric_limits<float>::epsilon()) {
-		const double max_dist (std::max (p1[0] - p0[0], p1[1] - p0[0]));
+		const double max_dist (std::max (p1[0] - p0[0], p1[1] - p0[1]));
 		p1[0] = p0[0] + max_dist;
 		p1[1] = p0[1] + max_dist;
 	}
