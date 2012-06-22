@@ -53,29 +53,15 @@ public:
    Fractal* getFractal ();
    ApfelmaennchenWidget* getApfelmaennchenWidget ();
    JuliaSetWidget* getJuliaSetWidget ();
-   Canvas* getCanvas ();
-   virtual bool show_all ();
-   bool isRemoveCandidate () {
-      return ready_to_remove;
-   }
+   Canvas const* getCanvas () const;
 
 protected:
    guint8* getData (Fractal const& input_fractal);
-   void onQuit ();
-   void onClose ();
-   gint delete_event_impl ( GdkEventAny * ) {
-      Gtk::Main::quit ();
-      return 0;
-   }
    bool onMotionNotifyEvent ( GdkEventMotion *event );
 
 private:
    MainWindow &parent;
-   Gtk::MenuBar main_menu_bar;
-   Gtk::Menu file_menu;
-   Gtk::Menu quit_menu;
    Gtk::HBox hbox;
-   Gtk::VBox vbox;
    Fractal *fractal;
    Canvas *canvas;
    ApfelmaennchenWidget *mbs_wdgt;
@@ -83,8 +69,6 @@ private:
    Gtk::FileChooserDialog *save_img_dlg;
    /** type of fractal 0 ... MandelbrotSet, 1 ... JuliaSet */
    unsigned tof;
-   bool hidden;
-   bool ready_to_remove;
 };
 
 #endif	//VIEWERWIDGET_H

@@ -41,15 +41,16 @@ public:
    Canvas ( Glib::RefPtr <Gdk::Pixbuf> pixbuf, ViewerWidget &vw );
    virtual ~Canvas();
    void setImage ( Glib::RefPtr <Gdk::Pixbuf> pixbuf );
+   Gtk::Image const& getImage() const;
    bool onMotionNotifyEvent ( GdkEventMotion *event );
    bool onButtonPressEvent ( GdkEventButton *event );
    bool onButtonReleaseEvent ( GdkEventButton *event );
-   unsigned getWidth ();
-   unsigned getHeight ();
+   unsigned getWidth () const;
+   unsigned getHeight () const;
 
 private:
    ViewerWidget &viewer_widget;
-   Gtk::Image image;
+   Gtk::Image _image;
    unsigned width, height;
    //saved to receive equal height and width
    unsigned x0, y0;

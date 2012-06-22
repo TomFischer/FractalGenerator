@@ -34,10 +34,10 @@
 
 Canvas::Canvas ( Glib::RefPtr < Gdk::Pixbuf > apixbuf, ViewerWidget &vw)
       : Gtk::EventBox(),
-      viewer_widget (vw), image ( apixbuf ),
+      viewer_widget (vw), _image ( apixbuf ),
       width ( apixbuf->get_width () ), height ( apixbuf->get_height () )
 {
-   add (image);
+   add (_image);
    add_events ( Gdk::POINTER_MOTION_MASK );
    add_events ( Gdk::BUTTON_PRESS_MASK );
    add_events ( Gdk::BUTTON_RELEASE_MASK );
@@ -107,17 +107,22 @@ bool Canvas::onButtonReleaseEvent ( GdkEventButton *event )
    return true;
 }
 
-unsigned Canvas::getWidth ()
+unsigned Canvas::getWidth () const
 {
-   return image.get_pixbuf()->get_width();
+   return _image.get_pixbuf()->get_width();
 }
 
-unsigned Canvas::getHeight ()
+unsigned Canvas::getHeight () const
 {
-   return image.get_pixbuf()->get_height();
+   return _image.get_pixbuf()->get_height();
 }
 
 void Canvas::setImage ( Glib::RefPtr<Gdk::Pixbuf> pixbuf )
 {
-   image.set (pixbuf);
+   _image.set (pixbuf);
+}
+
+Gtk::Image const& Canvas::getImage() const
+{
+	return _image;
 }

@@ -31,12 +31,10 @@
 ViewerWidget::ViewerWidget ( Fractal *afractal, MainWindow &aparent,
                              unsigned type )
       : Gtk::VBox (), parent ( aparent ),
-      main_menu_bar (), file_menu (), quit_menu (),
-      hbox (), vbox (), fractal ( afractal ), canvas ( NULL ),
+      hbox (), fractal ( afractal ), canvas ( NULL ),
       mbs_wdgt (NULL), js_wdgt (NULL),
       save_img_dlg (new Gtk::FileChooserDialog ( "Save fractal", Gtk::FILE_CHOOSER_ACTION_SAVE )),
-      tof (type),
-      hidden (false), ready_to_remove (false)
+      tof (type)
 {
    if (tof == 0) mbs_wdgt = new ApfelmaennchenWidget ( *this );
    else js_wdgt = new JuliaSetWidget (*this);
@@ -56,9 +54,7 @@ ViewerWidget::ViewerWidget ( Fractal *afractal, MainWindow &aparent,
    if (tof == 0) hbox.pack_start(*mbs_wdgt, Gtk::PACK_EXPAND_PADDING );
    else hbox.pack_start(*js_wdgt, Gtk::PACK_EXPAND_PADDING );
 
-   vbox.pack_start (hbox, Gtk::PACK_SHRINK);
-
-   add ( vbox );
+   pack_start (hbox, Gtk::PACK_SHRINK);
 
    save_img_dlg->add_button("Cancel", Gtk::RESPONSE_CANCEL);
    save_img_dlg->add_button("Ok", Gtk::RESPONSE_OK);
@@ -72,55 +68,6 @@ ViewerWidget::~ViewerWidget()
    //if (js_wdgt) delete js_wdgt;
    delete save_img_dlg;
 }
-
-bool ViewerWidget::show_all ()
-{
-   if (!hidden)
-      std::cout << "ViewerWidget::show_all !hidden" << std::endl;
-   else
-      std::cout << "ViewerWidget::show_all hidden" << std::endl;
-   return true;
-}
-/*
-guint8* ViewerWidget::getData ()
-{
-   size_t rows = fractal->getRows ();
-   size_t cols = fractal->getCols ();
-   size_t nob = 3; // number of bytes
-
-   guint8* data = new guint8 [ nob * rows * cols ];
-
-   for (size_t r = 0; r < rows; ++r) {
-      for (size_t c = 0; c < cols; ++c) {
-         if ( (*fractal)(r,c) < 10 ) {
-            // outer space
-            data[nob * (r * cols + c)] = (4 * (*fractal)(r,c));
-            data[nob * (r * cols + c) + 1] = (4 * (*fractal)(r,c));
-            data[nob * (r * cols + c) + 2] = (25 * (*fractal)(r,c));
-         }
-         if ( 10 <= (*fractal)(r,c) and (*fractal)(r,c) < 64) {
-            // border of body
-            data[nob * (r * cols + c)] = 255 - 4 * ((*fractal)(r,c)-10)-1;
-            data[nob * (r * cols + c) + 1] = 255 - 4 * ((*fractal)(r,c)-10)-1;
-            data[nob * (r * cols + c) + 2] = 255 - 1 * ((*fractal)(r,c)-10);
-         }
-         if ( 64 <= (*fractal)(r,c) and  (*fractal)(r,c) < 128 ) {
-            data[nob * (r * cols + c)] = 4 * ((*fractal)(r,c) - 64);
-            data[nob * (r * cols + c) + 1] = 2 * ((*fractal)(r,c) - 64);
-            data[nob * (r * cols + c) + 2] = ((*fractal)(r,c) - 64);
-         }
-         if ( (*fractal)(r,c) >  128) {
-            // body
-            data[nob * (r * cols + c)] = ((*fractal)(r,c)-128) % 32;
-            data[nob * (r * cols + c) + 1] = ((*fractal)(r,c)-128) % 255;
-            data[nob * (r * cols + c) + 2] = ((*fractal)(r,c)-128) % 255;
-         }
-      }
-   }
-
-   return data;
-}
-*/
 
 guint8* ViewerWidget::getData(Fractal const& input_fractal)
 {
@@ -215,29 +162,34 @@ guint8* ViewerWidget::getData(Fractal const& input_fractal)
 	return data;
 }
 
-void ViewerWidget::onSaveImg ()
+void ViewerWidget::onSaveImg()
 {
-   int res = save_img_dlg->run();
+	int res = save_img_dlg->run();
 
 	switch (res) {
 	case (Gtk::RESPONSE_OK): {
 		save_img_dlg->hide();
 		std::string fname(save_img_dlg->get_filename());
 
-		int screen_width(get_screen()->get_width());
-		int screen_height(get_screen()->get_height());
-		std::cout << "screen size: " << screen_width << " x " << screen_height << std::endl;
+//		int screen_width(get_screen()->get_width());
+//		int screen_height(get_screen()->get_height());
+//		std::cout << "screen size: " << screen_width << " x " << screen_height
+//				<< std::endl;
+//
+//		Fractal *tmp_fractal(new Apfelmaennchen(mbs_wdgt->getPoint(0),
+//				mbs_wdgt->getPoint(1), screen_width, screen_height,
+//				mbs_wdgt->getIterationDepth()));
+//		// make pixbuf from fractal
+//		Glib::RefPtr<Gdk::Pixbuf> tmp_pixbuf(Gdk::Pixbuf::create_from_data(
+//				getData(*tmp_fractal), Gdk::COLORSPACE_RGB, false, 8,
+//				tmp_fractal->getCols(), tmp_fractal->getRows(),
+//				tmp_fractal->getCols() * 3));
+//		tmp_pixbuf->save(fname, "png");
+//		delete tmp_fractal;
 
-		Fractal *tmp_fractal(new Apfelmaennchen(mbs_wdgt->getPoint(0),
-				mbs_wdgt->getPoint(1), screen_width, screen_height,
-				mbs_wdgt->getIterationDepth()));
-		// make pixbuf from fractal
-		Glib::RefPtr<Gdk::Pixbuf> tmp_pixbuf(Gdk::Pixbuf::create_from_data(
-				getData(*tmp_fractal), Gdk::COLORSPACE_RGB, false, 8,
-				tmp_fractal->getCols(), tmp_fractal->getRows(),
-				tmp_fractal->getCols() * 3));
-		tmp_pixbuf->save (fname, "png");
-		delete tmp_fractal;
+		Gtk::Image const& img (canvas->getImage());
+//		Glib::RefPtr<const Gdk::Pixbuf> pix_buf (img.get_pixbuf());
+		Glib::RefPtr<Gdk::Pixbuf>::cast_const (img.get_pixbuf())->save(fname, "png");
 		break;
 	}
 	case (Gtk::RESPONSE_CANCEL): {
@@ -310,21 +262,6 @@ void ViewerWidget::onMovie ()
    fractal = tf;
 }
 
-
-void ViewerWidget::onClose ( )
-{
-   hidden = true;
-   hide ();
-}
-
-void ViewerWidget::onQuit ( )
-{
-   hidden = true;
-   hide ();
-   ready_to_remove = true;
-   parent.cleanViewerWidgetList ();
-}
-
 void ViewerWidget::onNewViewerWidget ()
 {
    if (tof == 0) {
@@ -346,24 +283,25 @@ void ViewerWidget::onNewViewerWidget ()
    }
 }
 
-void ViewerWidget::onNewFractal ()
+void ViewerWidget::onNewFractal()
 {
-	Point2D p0 (mbs_wdgt->getPoint (0));
-	Point2D p1 (mbs_wdgt->getPoint (1));
-   size_t res (mbs_wdgt->getIterationDepth ());
-   size_t size (mbs_wdgt->getSize ());
+	Point2D p0(mbs_wdgt->getPoint(0));
+	Point2D p1(mbs_wdgt->getPoint(1));
+	size_t res(mbs_wdgt->getIterationDepth());
+	size_t size(mbs_wdgt->getSize());
 
-   // create a new Fractal
-   fractal = new Apfelmaennchen (p0, p1, size, size, res);
-   // make pixbuf from fractal
-   Glib::RefPtr <Gdk::Pixbuf> pixbuf (Gdk::Pixbuf::create_from_data
-		(getData (*fractal), Gdk::COLORSPACE_RGB, false, 8, fractal->getCols(),
-   	fractal->getRows (), fractal->getCols() * 3));
-   // give the pixbuf to the Canvas
-   canvas->setImage ( pixbuf );
-   // update the FractalWidget
-   if (tof == 0) mbs_wdgt->update ();
-   show_all ();
+	// create a new Fractal
+	fractal = new Apfelmaennchen(p0, p1, size, size, res);
+	// make pixbuf from fractal
+	Glib::RefPtr<Gdk::Pixbuf> pixbuf(Gdk::Pixbuf::create_from_data(getData(
+			*fractal), Gdk::COLORSPACE_RGB, false, 8, fractal->getCols(),
+			fractal->getRows(), fractal->getCols() * 3));
+	// give the pixbuf to the Canvas
+	canvas->setImage(pixbuf);
+	// update the FractalWidget
+	if (tof == 0)
+		mbs_wdgt->update();
+	show_all();
 }
 
 Fractal* ViewerWidget::getFractal ()
@@ -386,7 +324,7 @@ bool ViewerWidget::onMotionNotifyEvent ( GdkEventMotion *event )
    return canvas->onMotionNotifyEvent ( event );
 }
 
-Canvas* ViewerWidget::getCanvas ()
+Canvas const* ViewerWidget::getCanvas () const
 {
    return canvas;
 }
