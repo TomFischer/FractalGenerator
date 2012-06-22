@@ -44,31 +44,36 @@ class MainWindow;
 class ViewerWidget : public Gtk::VBox
 {
 public:
-   ViewerWidget ( Fractal *fractal, MainWindow &parent, unsigned type=0 );
+   ViewerWidget (Fractal *fractal, MainWindow &parent);
    virtual ~ViewerWidget();
    void onSaveImg ();
-   void onMovie ();
-   void onNewViewerWidget ();
-   void onNewFractal ();
+   virtual void onMovie () = 0;
+   virtual void onNewViewerWidget() = 0;
+   virtual void onNewFractal () = 0;
+
    Fractal* getFractal ();
-   ApfelmaennchenWidget* getApfelmaennchenWidget ();
-   JuliaSetWidget* getJuliaSetWidget ();
    Canvas const* getCanvas () const;
 
-protected:
-   guint8* getData (Fractal const& input_fractal);
-   bool onMotionNotifyEvent ( GdkEventMotion *event );
+   /**
+   	 * method for event handling motion notify event
+   	 * @param event
+   	 * @return
+   	 */
+   	virtual bool processMotionNotifyEvent(GdkEventMotion *event) = 0;
+   	virtual bool processButtonPressEvent(GdkEventButton *event) = 0;
+   	virtual bool processButtonReleaseEvent(GdkEventButton *event) = 0;
 
-private:
-   MainWindow &parent;
-   Gtk::HBox hbox;
-   Fractal *fractal;
-   Canvas *canvas;
-   ApfelmaennchenWidget *mbs_wdgt;
-   JuliaSetWidget *js_wdgt;
-   Gtk::FileChooserDialog *save_img_dlg;
-   /** type of fractal 0 ... MandelbrotSet, 1 ... JuliaSet */
-   unsigned tof;
+protected:
+   virtual guint8* getData(Fractal const& input_fractal) const = 0;
+
+   MainWindow &_parent;
+   /**
+    * horizontal box for depicting the fractal within a canvas object and the fractal settings widget
+    */
+   Gtk::HBox _hbox;
+   Fractal *_fractal;
+   Canvas *_canvas;
+   Gtk::FileChooserDialog *_save_img_dlg;
 };
 
 #endif	//VIEWERWIDGET_H

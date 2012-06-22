@@ -25,7 +25,6 @@
  *      Author: Thomas Fischer
  */
 
-#include "lexical_cast.h"
 #include "Canvas.h"
 #include "ViewerWidget.h"
 #include "PointInputDlg.h"
@@ -43,69 +42,17 @@ Canvas::Canvas ( Glib::RefPtr < Gdk::Pixbuf > apixbuf, ViewerWidget &vw)
    add_events ( Gdk::BUTTON_RELEASE_MASK );
 
    signal_motion_notify_event().connect (
-      sigc::mem_fun (*this, &Canvas::onMotionNotifyEvent));
+      sigc::mem_fun (viewer_widget, &ViewerWidget::processMotionNotifyEvent));
    signal_button_press_event().connect(
-      sigc::mem_fun(*this, &Canvas::onButtonPressEvent) );
+      sigc::mem_fun(viewer_widget, &ViewerWidget::processButtonPressEvent) );
    signal_button_release_event().connect(
-      sigc::mem_fun(*this, &Canvas::onButtonReleaseEvent) );
+      sigc::mem_fun(viewer_widget, &ViewerWidget::processButtonReleaseEvent) );
 
    set_resize_mode ( Gtk::RESIZE_PARENT );
 }
 
 Canvas::~Canvas()
 {}
-
-bool Canvas::onMotionNotifyEvent ( GdkEventMotion *event )
-{
-   unsigned x = lexical_cast <unsigned> (event->x);
-   unsigned y = lexical_cast <unsigned> (event->y);
-   if (viewer_widget.getApfelmaennchenWidget())
-      viewer_widget.getApfelmaennchenWidget ()->actualizePointerPosition (x, y);
-   /*else
-      viewer_widget.getJuliaSetWidget ()->actualizePointerPosition (x, y);*/
-
-   return true;
-}
-
-bool Canvas::onButtonPressEvent ( GdkEventButton *event )
-{
-   x0 = lexical_cast <unsigned> (event->x);
-   y0 = lexical_cast <unsigned> (event->y);
-   if (viewer_widget.getApfelmaennchenWidget())
-      viewer_widget.getApfelmaennchenWidget()->onCoordinateChanged (0, x0, y0);
-   /*else
-      viewer_widget.getJuliaSetWidget ()->actualizePointerPosition (x0, y0);*/
-
-   return true;
-}
-
-bool Canvas::onButtonReleaseEvent ( GdkEventButton *event )
-{
-   unsigned x = lexical_cast <unsigned> (event->x);
-   unsigned y = lexical_cast <unsigned> (event->y);
-   unsigned mid = unsigned(0.5*(abs(x - x0)+abs(y - y0)));
-   unsigned temp;
-   if (x0 < x) x = x0 + mid;
-   else {
-      temp = x0 - mid;
-      x = x0;
-      x0 = temp;
-   }
-   if (y0 < y) y = y0 + mid;
-   else {
-      temp = y0 - mid;
-      y = y0;
-      y0 = temp;
-   }
-   if (dynamic_cast<Apfelmaennchen*>(viewer_widget.getFractal())) {
-	   viewer_widget.getApfelmaennchenWidget()->onCoordinateChanged (0, x0, y0);
-	   viewer_widget.getApfelmaennchenWidget()->onCoordinateChanged (1, x, y);
-   } else {
-       viewer_widget.getJuliaSetWidget()->onCoordinateChanged (1, x, y);
-   }
-
-   return true;
-}
 
 unsigned Canvas::getWidth () const
 {

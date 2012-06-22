@@ -25,11 +25,14 @@
  *      Author: Thomas Fischer
  */
 
+#include <iostream>
+
 #include "MainWindow.h"
 #include "Point.h"
 #include "JuliaSet.h"
 #include "Farn.h"
-#include <iostream>
+#include "ViewerWidget.h"
+#include "MandelbrotSetViewerWidget.h"
 
 MainWindow::MainWindow ()
       : Gtk::Window (Gtk::WINDOW_TOPLEVEL), main_menu_bar (), fractal_menu (),
@@ -109,7 +112,7 @@ void MainWindow::addMandelbrotSet ()
    int quad_size (0.9 * std::min(wnd_w, wnd_h));
 
    Fractal *fractal (new Apfelmaennchen (p0, p1, quad_size, quad_size, 300));
-   vw_list.push_back (new ViewerWidget (fractal, *this ));
+   vw_list.push_back (new GUI::MandelbrotSetViewerWidget (fractal, *this ));
    std::list<ViewerWidget*>::iterator it (vw_list.end());
    it--;
    std::cout << "notebook: appending page ... " << std::flush;
@@ -120,7 +123,7 @@ void MainWindow::addMandelbrotSet ()
 
 void MainWindow::addFractal ( Fractal *fractal )
 {
-   vw_list.push_back (new ViewerWidget (fractal, *this ));
+   vw_list.push_back (new GUI::MandelbrotSetViewerWidget (fractal, *this ));
    std::list<ViewerWidget*>::iterator it (vw_list.end());
    it--;
    std::cout << "notebook: appending page ... " << std::flush;
@@ -131,21 +134,21 @@ void MainWindow::addFractal ( Fractal *fractal )
 
 void MainWindow::onCreateFarn()
 {
-	double pp0[2] = { -0.5, 0.0 }, pp1[2] = { 0.5, 1.1 };
-	Point2D p0(pp0), p1(pp1);
-
-	int wnd_w, wnd_h;
-	get_size(wnd_w, wnd_h);
-	int quad_size(0.9 * std::min(wnd_w, wnd_h));
-
-	Fractal *fractal(new Farn(quad_size, quad_size, p0, p1));
-	vw_list.push_back(new ViewerWidget(fractal, *this));
-	std::list<ViewerWidget*>::iterator it(vw_list.end());
-	it--;
-	std::cout << "notebook: appending page ... " << std::flush;
-	notebook.append_page((*(*it)));
-	std::cout << "ok " << std::endl;
-	notebook.show_all ();
+//	double pp0[2] = { -0.5, 0.0 }, pp1[2] = { 0.5, 1.1 };
+//	Point2D p0(pp0), p1(pp1);
+//
+//	int wnd_w, wnd_h;
+//	get_size(wnd_w, wnd_h);
+//	int quad_size(0.9 * std::min(wnd_w, wnd_h));
+//
+//	Fractal *fractal(new Farn(quad_size, quad_size, p0, p1));
+//	vw_list.push_back(new ViewerWidget(fractal, *this));
+//	std::list<ViewerWidget*>::iterator it(vw_list.end());
+//	it--;
+//	std::cout << "notebook: appending page ... " << std::flush;
+//	notebook.append_page((*(*it)));
+//	std::cout << "ok " << std::endl;
+//	notebook.show_all ();
 }
 
 
@@ -159,18 +162,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::addJuliaSet ()
 {
-   // spaeter aus dialog auslesen
-   double pp0[2] = {-2.0, -2.0}, pp1[2] = {2.0, 2.0};
-   Point2D p0 (pp0), p1 (pp1);
-
-   int wnd_w, wnd_h;
-   get_size ( wnd_w, wnd_h );
-
-   Fractal *fractal (new JuliaSet (p0, p1, 550, 550, 300));
-   vw_list.push_back (new ViewerWidget (fractal, *this, 1));
-   std::list<ViewerWidget*>::iterator it (vw_list.end());
-   it--;
-   notebook.append_page ((*(*it)));
-   notebook.show_all ();
+//   // spaeter aus dialog auslesen
+//   double pp0[2] = {-2.0, -2.0}, pp1[2] = {2.0, 2.0};
+//   Point2D p0 (pp0), p1 (pp1);
+//
+//   int wnd_w, wnd_h;
+//   get_size ( wnd_w, wnd_h );
+//
+//   Fractal *fractal (new JuliaSet (p0, p1, 550, 550, 300));
+//   vw_list.push_back (new ViewerWidget (fractal, *this, 1));
+//   std::list<ViewerWidget*>::iterator it (vw_list.end());
+//   it--;
+//   notebook.append_page ((*(*it)));
+//   notebook.show_all ();
 }
 

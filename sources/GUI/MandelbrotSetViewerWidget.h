@@ -28,14 +28,24 @@
 
 #include "ViewerWidget.h"
 #include "ApfelmaennchenWidget.h"
+#include "Fractal.h"
+#include "MainWindow.h"
 
 namespace GUI {
 
 class MandelbrotSetViewerWidget: public ViewerWidget
 {
 public:
-	MandelbrotSetViewerWidget();
+	MandelbrotSetViewerWidget(Fractal *fractal, MainWindow &parent);
 	virtual ~MandelbrotSetViewerWidget();
+protected:
+	virtual guint8* getData (Fractal const& input_fractal) const;
+	virtual void onMovie ();
+	virtual void onNewViewerWidget();
+	virtual void onNewFractal ();
+	virtual bool processMotionNotifyEvent(GdkEventMotion *event);
+	virtual bool processButtonPressEvent ( GdkEventButton *event );
+	virtual bool processButtonReleaseEvent ( GdkEventButton *event );
 private:
 	ApfelmaennchenWidget *_mbs_wdgt;
 };
