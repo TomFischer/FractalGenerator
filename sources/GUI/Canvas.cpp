@@ -31,10 +31,9 @@
 #include <cmath>
 #include <iostream>
 
-Canvas::Canvas ( Glib::RefPtr < Gdk::Pixbuf > apixbuf, ViewerWidget &vw)
+Canvas::Canvas ( Glib::RefPtr < Gdk::Pixbuf > pixbuf, ViewerWidget &vw)
       : Gtk::EventBox(),
-      viewer_widget (vw), _image ( apixbuf ),
-      width ( apixbuf->get_width () ), height ( apixbuf->get_height () )
+      _image ( pixbuf )
 {
    add (_image);
    add_events ( Gdk::POINTER_MOTION_MASK );
@@ -42,11 +41,11 @@ Canvas::Canvas ( Glib::RefPtr < Gdk::Pixbuf > apixbuf, ViewerWidget &vw)
    add_events ( Gdk::BUTTON_RELEASE_MASK );
 
    signal_motion_notify_event().connect (
-      sigc::mem_fun (viewer_widget, &ViewerWidget::processMotionNotifyEvent));
+      sigc::mem_fun (vw, &ViewerWidget::processMotionNotifyEvent));
    signal_button_press_event().connect(
-      sigc::mem_fun(viewer_widget, &ViewerWidget::processButtonPressEvent) );
+      sigc::mem_fun(vw, &ViewerWidget::processButtonPressEvent) );
    signal_button_release_event().connect(
-      sigc::mem_fun(viewer_widget, &ViewerWidget::processButtonReleaseEvent) );
+      sigc::mem_fun(vw, &ViewerWidget::processButtonReleaseEvent) );
 
    set_resize_mode ( Gtk::RESIZE_PARENT );
 }

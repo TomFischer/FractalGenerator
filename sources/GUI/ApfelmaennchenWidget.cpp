@@ -129,27 +129,24 @@ size_t ApfelmaennchenWidget::getSize () const
 
 void ApfelmaennchenWidget::actualizePointerPosition ( int x, int y )
 {
-   double p0[2], p1[2];
-   Fractal* frac = viewer_widget.getFractal();
-   p0[0] = frac->getFirstPoint()[0];
-   p0[1] = frac->getFirstPoint()[1];
-   p1[0] = frac->getSecondPoint()[0];
-   p1[1] = frac->getSecondPoint()[1];
+   Fractal const*const frac (viewer_widget.getFractal());
+   Point2D const& p0(frac->getFirstPoint());
+   Point2D const& p1(frac->getSecondPoint());
 
-   unsigned x_pix_size = frac->getRows ();
-   unsigned y_pix_size = frac->getCols ();
+   const unsigned x_pix_size (frac->getRows ());
+   const unsigned y_pix_size (frac->getCols ());
 
-   double xcoord = ((p1[0] - p0[0]) * y) / x_pix_size + p0[0];
-   double ycoord = ((p1[1] - p0[1]) * x) / y_pix_size + p0[1];
+   const double xcoord (((p1[0] - p0[0]) * y) / x_pix_size + p0[0]);
+   const double ycoord (((p1[1] - p0[1]) * x) / y_pix_size + p0[1]);
 
    unsigned num_iter = 0;
    if (0 <= x and x < x_pix_size and 0 <= y and y < y_pix_size) {
       num_iter = (*frac)(y,x);
    }
 
-   std::string label_x = lexical_cast <std::string> (xcoord);
-   std::string label_y = lexical_cast <std::string> (ycoord);
-   std::string label_num_iter = lexical_cast <std::string> (num_iter);
+   const std::string label_x(lexical_cast <std::string> (xcoord));
+   const std::string label_y(lexical_cast <std::string> (ycoord));
+   const std::string label_num_iter(lexical_cast <std::string> (num_iter));
 
    mouse_pos_x.set_text ( label_x.c_str () );
    mouse_pos_y.set_text ( label_y.c_str () );

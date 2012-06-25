@@ -49,11 +49,7 @@ public:
    unsigned getHeight () const;
 
 private:
-   ViewerWidget &viewer_widget;
    Gtk::Image _image;
-   unsigned width, height;
-   //saved to receive equal height and width
-   unsigned x0, y0;
 };
 
 #endif	//CANVAS_H

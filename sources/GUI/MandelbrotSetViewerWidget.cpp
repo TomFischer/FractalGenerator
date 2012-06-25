@@ -43,7 +43,7 @@ MandelbrotSetViewerWidget::MandelbrotSetViewerWidget(Fractal *fractal,
 	_canvas = new Canvas(pixbuf, *this);
 
 	// add the Canvas to this widget
-	_hbox.pack_start(*_canvas, Gtk::PACK_SHRINK);
+	_hbox.pack_start(*_canvas, Gtk::PACK_EXPAND_PADDING);
 	// make and add controls for fractal
 	_hbox.pack_start(*_mbs_wdgt, Gtk::PACK_EXPAND_PADDING);
 
@@ -279,8 +279,8 @@ bool MandelbrotSetViewerWidget::processButtonReleaseEvent(GdkEventButton *event)
 	unsigned x(lexical_cast<unsigned> (event->x));
 	unsigned y(lexical_cast<unsigned> (event->y));
 
-	// fetch coords of p0
-	Point2D p0(_mbs_wdgt->getPoint(0));
+	// fetch original coords of p0
+	Point2D p0(_fractal->getFirstPoint ()); // _mbs_wdgt->getPoint(0));
 
 	unsigned mid = unsigned(0.5 * (abs(x - p0[0]) + abs(y - p0[1])));
 	unsigned temp;
