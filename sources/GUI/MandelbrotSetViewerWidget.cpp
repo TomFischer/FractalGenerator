@@ -65,25 +65,13 @@ guint8* MandelbrotSetViewerWidget::getData(Fractal const& input_fractal) const
 	guint8* data(new guint8[nob * rows * cols]);
 
 	unsigned max(input_fractal.getMaxVal()), min(input_fractal.getMinVal());
-//	gushort sred, ered, sgreen, egreen, sblue, eblue;
-//	if (tof == 0) {
-//		Gdk::Color c0(mbs_wdgt->getColor(true));
-//		Gdk::Color c1(mbs_wdgt->getColor(false));
-//		sred = c0.get_red();
-//		ered = c1.get_red();
-//		sgreen = c0.get_green();
-//		egreen = c1.get_green();
-//		sblue = c0.get_blue();
-//		eblue = c1.get_blue();
-//	}
 
 	// parameters of HSV color space
 	double max_hue(240);
-	double saturation(0.7);
-	double value(0.7);
+	double saturation(0.8);
+	double value(0.5);
 
 	// color transformation
-//	double dred(ered - sred), dgreen(egreen - sgreen), dblue(eblue - sblue);
 	double dfrac(max_hue);
 	if (max != min)
 		dfrac /= (max-min);
@@ -91,9 +79,16 @@ guint8* MandelbrotSetViewerWidget::getData(Fractal const& input_fractal) const
 	for (size_t r = 0; r < rows; ++r) {
 		for (size_t c = 0; c < cols; ++c) {
 
+//			if (input_fractal(r,c) < 50) {
+//				value = 0.7 * input_fractal(r,c)/50.0;
+//				saturation = input_fractal(r,c)/50.0;
+//			} else {
+//				value = 0.7;
+//				saturation= 1.0;
+//			}
 			double hue (static_cast<double> ((input_fractal(r, c) - min) * dfrac));
 
-			// helper for transformation to RGB
+			// helpers for transformation to RGB
 			size_t h_i (static_cast<size_t>(floor(hue / 60)));
 			double f (hue/60 - h_i);
 			double p (value * (1 - saturation));
@@ -141,10 +136,6 @@ guint8* MandelbrotSetViewerWidget::getData(Fractal const& input_fractal) const
 			default:
 				std::cout << "error computing color value for pixel (" << r << "," << c << "): " << input_fractal(r, c) << ", h_i: " << h_i << std::endl;
 			} // end switch
-
-//			data[idx] = static_cast<guint8> ((sred + frac_val * dred) / 65535 * 255);
-//			data[idx + 1] = static_cast<guint8> ((sgreen + frac_val * dgreen) / 65535 * 255);
-//			data[idx + 2] = static_cast<guint8> ((sblue + frac_val * dblue) / 65535 * 255);
 		}
 	}
 	return data;
@@ -239,10 +230,27 @@ void MandelbrotSetViewerWidget::onNewViewerWidget()
 
 void MandelbrotSetViewerWidget::onNewFractal()
 {
-	Point2D const& p0(_mbs_wdgt->getPoint(0));
-	Point2D const& p1(_mbs_wdgt->getPoint(1));
+	Point2D p0(_mbs_wdgt->getPoint(0));
+	Point2D p1(_mbs_wdgt->getPoint(1));
 	size_t res(_mbs_wdgt->getIterationDepth());
 	size_t size(_mbs_wdgt->getSize());
+
+	// make p0 left point
+	if (p1[0] < p0[0]) std::swap (p0[0], p1[0]);
+	// make p0 lower point
+	if (p0[1] > p1[1]) std::swap (p0[1], p1[1]);
+
+	// move p1 such that p0 and p1 describes a square
+	if (fabs ((p1[0] - p0[0]) - (p1[1] - p0[0])) < std::numeric_limits<float>::epsilon()) {
+		const double max_dist (std::max (p1[0] - p0[0], p1[1] - p0[1]));
+		p1[0] = p0[0] + max_dist;
+		p1[1] = p0[1] + max_dist;
+	}
+
+	_mbs_wdgt->getPointInputDlg(0).setCoordinate(0, p0[0]);
+	_mbs_wdgt->getPointInputDlg(0).setCoordinate(1, p0[1]);
+	_mbs_wdgt->getPointInputDlg(1).setCoordinate(0, p1[0]);
+	_mbs_wdgt->getPointInputDlg(1).setCoordinate(1, p1[1]);
 
 	// create a new Fractal
 	delete _fractal;
@@ -279,25 +287,25 @@ bool MandelbrotSetViewerWidget::processButtonReleaseEvent(GdkEventButton *event)
 	unsigned x(lexical_cast<unsigned> (event->x));
 	unsigned y(lexical_cast<unsigned> (event->y));
 
-	// fetch original coords of p0
-	Point2D p0(_fractal->getFirstPoint ()); // _mbs_wdgt->getPoint(0));
-
-	unsigned mid = unsigned(0.5 * (abs(x - p0[0]) + abs(y - p0[1])));
-	unsigned temp;
-	if (p0[0] < x)
-		x = p0[0] + mid;
-	else {
-		temp = p0[0] - mid;
-		x = p0[0];
-		p0[0] = temp;
-	}
-	if (p0[1] < y)
-		y = p0[1] + mid;
-	else {
-		temp = p0[1] - mid;
-		y = p0[1];
-		p0[1] = temp;
-	}
+//	// fetch original coords of p0
+//	Point2D p0(_fractal->getFirstPoint ()); // _mbs_wdgt->getPoint(0));
+//
+//	unsigned mid = unsigned(0.5 * (abs(x - p0[0]) + abs(y - p0[1])));
+//	unsigned temp;
+//	if (p0[0] < x)
+//		x = p0[0] + mid;
+//	else {
+//		temp = p0[0] - mid;
+//		x = p0[0];
+//		p0[0] = temp;
+//	}
+//	if (p0[1] < y)
+//		y = p0[1] + mid;
+//	else {
+//		temp = p0[1] - mid;
+//		y = p0[1];
+//		p0[1] = temp;
+//	}
 
 	_mbs_wdgt->onCoordinateChanged(1, x, y);
 

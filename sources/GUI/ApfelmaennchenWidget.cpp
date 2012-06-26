@@ -171,9 +171,6 @@ void ApfelmaennchenWidget::onCoordinateChanged(unsigned dim, unsigned x, unsigne
 
 	getPointInputDlg(dim).setCoordinate(0, dy);
 	getPointInputDlg(dim).setCoordinate(1, dx);
-
-	std::cout << "Button pressed at (" << dy << "," << dx << ")";
-	std::cout << std::endl;
 }
 
 guint8* ApfelmaennchenWidget::getData()
