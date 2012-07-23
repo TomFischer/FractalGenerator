@@ -277,7 +277,6 @@ void ApfelmaennchenWidget::update ()
    Glib::RefPtr<Gdk::Pixbuf> pixbuf (Gdk::Pixbuf::create_from_data(raw_data,
                                      Gdk::COLORSPACE_RGB, false, 8, 150, 150, 150*3));
    overview_img.set (pixbuf);
-//	delete [] raw_data;
 }
 
 

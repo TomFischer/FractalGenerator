@@ -33,6 +33,7 @@
 #include "Farn.h"
 #include "ViewerWidget.h"
 #include "MandelbrotSetViewerWidget.h"
+#include "JuliaSetViewerWidget.h"
 
 MainWindow::MainWindow ()
       : Gtk::Window (Gtk::WINDOW_TOPLEVEL), main_menu_bar (), fractal_menu (),
@@ -162,18 +163,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::addJuliaSet ()
 {
-//   // spaeter aus dialog auslesen
-//   double pp0[2] = {-2.0, -2.0}, pp1[2] = {2.0, 2.0};
-//   Point2D p0 (pp0), p1 (pp1);
-//
-//   int wnd_w, wnd_h;
-//   get_size ( wnd_w, wnd_h );
-//
-//   Fractal *fractal (new JuliaSet (p0, p1, 550, 550, 300));
-//   vw_list.push_back (new ViewerWidget (fractal, *this, 1));
-//   std::list<ViewerWidget*>::iterator it (vw_list.end());
-//   it--;
-//   notebook.append_page ((*(*it)));
-//   notebook.show_all ();
+   // spaeter aus dialog auslesen
+   double pp0[2] = {-2.0, -2.0}, pp1[2] = {2.0, 2.0};
+   Point2D p0 (pp0), p1 (pp1);
+
+   int wnd_w, wnd_h;
+   get_size ( wnd_w, wnd_h );
+
+   Fractal *fractal (new JuliaSet (p0, p1, 550, 550, 300));
+   vw_list.push_back (new GUI::JuliaSetViewerWidget (fractal, *this));
+   std::list<ViewerWidget*>::iterator it (vw_list.end());
+   it--;
+   notebook.append_page ((*(*it)));
+   notebook.show_all ();
 }
 

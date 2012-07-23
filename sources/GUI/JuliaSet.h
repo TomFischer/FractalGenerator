@@ -39,7 +39,7 @@
  * Fractal und enth&auml;lt den Algorithmus zur Berechnung der
  * Juliamenge.
  *
- * Die Klasse JuliaMenge stellt eine Spezialisierung der Schnittstelle zur
+ * Die Klasse JuliaSet stellt eine Spezialisierung der Schnittstelle zur
  * Erstellung verschiedener Fraktale dar.
  */
 class JuliaSet : public Fractal

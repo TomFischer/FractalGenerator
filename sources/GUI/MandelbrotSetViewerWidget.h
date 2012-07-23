@@ -1,4 +1,4 @@
-/*
+/**
 * Copyright (C) 2012 Thomas Fischer
 *
 * This file is part of "FractalGenerator". "FractalGenerator" is free
@@ -14,14 +14,11 @@
 * You should have received a copy of the GNU General Public License along with
 * "FractalGenerator". If not, see <http://www.gnu.org/licenses/>.
 *
+* @file MandelbrotSetViewerWidget.h
+*
+*  Created on: 21.06.2012
+*      Author: Thomas Fischer
 */
-
-/*
- * @file MandelbrotSetViewerWidget.h
- *
- *  Created on: 21.06.2012
- *      Author: Thomas Fischer
- */
 
 #ifndef MANDELBROTSETVIEWERWIDGET_H_
 #define MANDELBROTSETVIEWERWIDGET_H_
