@@ -30,11 +30,14 @@
 
 #include <gtkmm/image.h>
 #include <gtkmm/box.h>
-#include <gtkmm/eventbox.h>
+#include <gtkmm/drawingarea.h>
+
+#include <cairomm/context.h>
+
 
 class ViewerWidget;
 
-class Canvas : public Gtk::EventBox
+class Canvas : public Gtk::DrawingArea
 {
 public:
    Canvas ();
@@ -47,6 +50,10 @@ public:
    bool onButtonReleaseEvent ( GdkEventButton *event );
    unsigned getWidth () const;
    unsigned getHeight () const;
+
+protected:
+   virtual void	on_realize();
+   virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 
 private:
    Gtk::Image _image;

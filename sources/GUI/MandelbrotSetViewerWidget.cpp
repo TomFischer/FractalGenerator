@@ -51,6 +51,8 @@ MandelbrotSetViewerWidget::MandelbrotSetViewerWidget(Fractal *fractal,
 
 	_save_img_dlg->add_button("Cancel", Gtk::RESPONSE_CANCEL);
 	_save_img_dlg->add_button("Ok", Gtk::RESPONSE_OK);
+
+	show_all();
 }
 
 MandelbrotSetViewerWidget::~MandelbrotSetViewerWidget()

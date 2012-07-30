@@ -35,6 +35,12 @@
 #include "MandelbrotSetViewerWidget.h"
 #include "JuliaSetViewerWidget.h"
 
+#include <cairommconfig.h>
+#include <cairomm/context.h>
+#include <cairomm/surface.h>
+
+#include <cmath>
+
 MainWindow::MainWindow ()
       : Gtk::Window (Gtk::WINDOW_TOPLEVEL), main_menu_bar (), fractal_menu (),
       history_menu (), image_menu (), vbox (), notebook ()
