@@ -51,7 +51,7 @@ Canvas::Canvas ( Glib::RefPtr < Gdk::Pixbuf > pixbuf, ViewerWidget &vw)
 			&ViewerWidget::processButtonPressEvent));
 	signal_button_release_event().connect(sigc::mem_fun(vw,
 			&ViewerWidget::processButtonReleaseEvent));
-//   set_resize_mode ( Gtk::RESIZE_PARENT );
+	set_size_request ( pixbuf->get_width(), pixbuf->get_height()); //Gtk::RESIZE_PARENT );
 
 	_image_sfc = Cairo::ImageSurface::create(Cairo::FORMAT_RGB24, pixbuf->get_width(), pixbuf->get_height());
 //	image_context_ptr_ = Cairo::Context::create(_image_sfc);
@@ -114,6 +114,7 @@ bool Canvas::on_expose_event(GdkEventExpose* event)
 	std::cout << "[Canvas::on_expose_event] size: " << width << " x " << height << std::endl;
 	if (window) {
 		Cairo::RefPtr<Cairo::Context> cr(window->create_cairo_context());
+/*
 
 		cr->rectangle(0, 0, getWidth(), getHeight());
 		//event->area.x, event->area.y,	event->area.width, event->area.height);
@@ -125,24 +126,24 @@ bool Canvas::on_expose_event(GdkEventExpose* event)
 		cr->clip();
 		cr->paint();
 //		Gdk::Cairo::set_source_pixbuf(cr, _image.get_pixbuf(), 0, 0);
+*/
+		const int width (getWidth());
+		const int height (getHeight());
 
-//		const int width (getWidth());
-//		const int height (getHeight());
-//
-//		// coordinates for the center of the window
-//		int xc, yc;
-//		xc = width / 2;
-//		yc = height / 2;
-//
-//		cr->set_line_width(10.0);
-//
-//		// draw red lines out from the center of the window
-//		cr->set_source_rgb(0.8, 0.0, 0.0);
-//		cr->move_to(0, 0);
-//		cr->line_to(xc, yc);
-//		cr->line_to(0, height);
-//		cr->move_to(xc, yc);
-//		cr->line_to(width, yc);
+		// coordinates for the center of the window
+		int xc, yc;
+		xc = width / 2;
+		yc = height / 2;
+
+		cr->set_line_width(10.0);
+
+		// draw red lines out from the center of the window
+		cr->set_source_rgb(0.8, 0.0, 0.0);
+		cr->move_to(0, 0);
+		cr->line_to(xc, yc);
+		cr->line_to(0, height);
+		cr->move_to(xc, yc);
+		cr->line_to(width, yc);
 		cr->stroke();
 	}
 	return true;
