@@ -32,3 +32,14 @@ TARGET_LINK_LIBRARIES ( FractalGenerator
         ${GTKMM_LIBRARIES}
 )
 
+ADD_EXECUTABLE( DrawingAreaTest
+        DrawingAreaTest.cpp
+        ${SOURCES}
+        ${HEADERS}
+)
+
+TARGET_LINK_LIBRARIES ( DrawingAreaTest 
+        GUI
+        ${GTKMM_LIBRARIES}
+)
+
