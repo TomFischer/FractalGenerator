@@ -38,9 +38,9 @@
 
 
 Canvas::Canvas ( Glib::RefPtr < Gdk::Pixbuf > pixbuf, ViewerWidget &vw)
-      : _image ( pixbuf )
+      : _pixbuf_image ( pixbuf )
 {
-//   add (_image);
+//   add (_pixbuf_image);
 	add_events(Gdk::POINTER_MOTION_MASK);
 	add_events(Gdk::BUTTON_PRESS_MASK);
 	add_events(Gdk::BUTTON_RELEASE_MASK);
@@ -51,14 +51,15 @@ Canvas::Canvas ( Glib::RefPtr < Gdk::Pixbuf > pixbuf, ViewerWidget &vw)
 			&ViewerWidget::processButtonPressEvent));
 	signal_button_release_event().connect(sigc::mem_fun(vw,
 			&ViewerWidget::processButtonReleaseEvent));
-	set_size_request ( pixbuf->get_width(), pixbuf->get_height()); //Gtk::RESIZE_PARENT );
 
 	_image_sfc = Cairo::ImageSurface::create(Cairo::FORMAT_RGB24, pixbuf->get_width(), pixbuf->get_height());
-//	image_context_ptr_ = Cairo::Context::create(_image_sfc);
-//	        Gdk::Cairo::set_source_pixbuf(image_context_ptr_, image_ptr_, 0.0,
-//	0.0);
-//	image_context_ptr_->paint();
 
+	// Create the new Context for the ImageSurface
+	_image_context = Cairo::Context::create (_image_sfc);
+
+	// Draw the image on the new Context
+	Gdk::Cairo::set_source_pixbuf (_image_context, _pixbuf_image, 0.0, 0.0);
+	_image_context->paint();
 }
 
 Canvas::~Canvas()
@@ -71,17 +72,18 @@ void Canvas::on_realize()
 	std::cout << "[Canvas::on_realize()] size: " << get_width() << " x " << get_height() << std::endl;
 	if (win) {
 		Cairo::RefPtr<Cairo::Context> cairo_context (win->create_cairo_context());
-		Gdk::Cairo::set_source_pixbuf(cairo_context, _image.get_pixbuf(), 0, 0);
+		Gdk::Cairo::set_source_pixbuf(cairo_context, _pixbuf_image, 0, 0);
 		on_draw(cairo_context);
 	}
 }
 
 bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-//	Gdk::Cairo::set_source_pixbuf(cr, _image.get_pixbuf(), 0, 0);
-//	cr->rectangle(0, 0, getWidth(), getHeight());
-//	cr->fill();
-//	cr->paint();
+	Gdk::Cairo::set_source_pixbuf(cr, _pixbuf_image, 0, 0);
+	cr->rectangle(0, 0, getWidth(), getHeight());
+	cr->fill();
+	cr->paint();
+
 	Gtk::Allocation allocation = get_allocation();
 	const int width = allocation.get_width();
 	const int height = allocation.get_height();
@@ -114,19 +116,19 @@ bool Canvas::on_expose_event(GdkEventExpose* event)
 	std::cout << "[Canvas::on_expose_event] size: " << width << " x " << height << std::endl;
 	if (window) {
 		Cairo::RefPtr<Cairo::Context> cr(window->create_cairo_context());
-/*
 
-		cr->rectangle(0, 0, getWidth(), getHeight());
-		//event->area.x, event->area.y,	event->area.width, event->area.height);
-		cr->clip();
+	    // Store context
+		cr->save();
 
-		cr->set_source(_image_sfc, 0, 0);
-
-		cr->rectangle(0.0, 0.0, getWidth(), getHeight());
+	    // Draw the source image on the widget context
+		cr->set_source (_image_sfc, 0.0, 0.0);
+		cr->rectangle (0.0, 0.0, _pixbuf_image->get_width(), _pixbuf_image->get_height());
 		cr->clip();
 		cr->paint();
-//		Gdk::Cairo::set_source_pixbuf(cr, _image.get_pixbuf(), 0, 0);
-*/
+
+	    // Restore context
+		cr->restore();
+
 		const int width (getWidth());
 		const int height (getHeight());
 
@@ -151,20 +153,21 @@ bool Canvas::on_expose_event(GdkEventExpose* event)
 
 unsigned Canvas::getWidth () const
 {
-   return _image.get_pixbuf()->get_width();
+   return _pixbuf_image->get_width();
 }
 
 unsigned Canvas::getHeight () const
 {
-   return _image.get_pixbuf()->get_height();
+   return _pixbuf_image->get_height();
+}
+
+Glib::RefPtr<Gdk::Pixbuf> const Canvas::getImagePixbuf() const
+{
+	return _pixbuf_image;
 }
 
 void Canvas::setImage ( Glib::RefPtr<Gdk::Pixbuf> pixbuf )
 {
-   _image.set (pixbuf);
+   _pixbuf_image = pixbuf;
 }
 
-Gtk::Image const& Canvas::getImage() const
-{
-	return _image;
-}

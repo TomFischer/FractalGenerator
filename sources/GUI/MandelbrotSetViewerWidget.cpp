@@ -41,6 +41,7 @@ MandelbrotSetViewerWidget::MandelbrotSetViewerWidget(Fractal *fractal,
 
 	// create with this pixbuf a Canvas
 	_canvas = new Canvas(pixbuf, *this);
+	_canvas->set_size_request (fractal->getCols(), fractal->getRows());
 
 	// add the Canvas to this widget
 	_hbox.pack_start(*_canvas, Gtk::PACK_EXPAND_PADDING);

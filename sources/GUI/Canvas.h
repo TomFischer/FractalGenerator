@@ -44,7 +44,7 @@ public:
    Canvas ( Glib::RefPtr <Gdk::Pixbuf> pixbuf, ViewerWidget &vw );
    virtual ~Canvas();
    void setImage ( Glib::RefPtr <Gdk::Pixbuf> pixbuf );
-   Gtk::Image const& getImage() const;
+   Glib::RefPtr<Gdk::Pixbuf> const getImagePixbuf() const;
    bool onMotionNotifyEvent ( GdkEventMotion *event );
    bool onButtonPressEvent ( GdkEventButton *event );
    bool onButtonReleaseEvent ( GdkEventButton *event );
@@ -57,8 +57,9 @@ protected:
    virtual bool on_expose_event(GdkEventExpose* event);
 
 private:
-   Gtk::Image _image;
+   Glib::RefPtr<Gdk::Pixbuf> _pixbuf_image;
    Cairo::RefPtr<Cairo::ImageSurface> _image_sfc;
+   Cairo::RefPtr<Cairo::Context> _image_context;
 };
 
 #endif	//CANVAS_H
