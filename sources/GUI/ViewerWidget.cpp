@@ -91,8 +91,8 @@ void ViewerWidget::onSaveImg()
 //		tmp_pixbuf->save(fname, "png");
 //		delete tmp_fractal;
 
-		Glib::RefPtr<Gdk::Pixbuf> fractal_pixbuf (_canvas->getImagePixbuf());
-		Glib::RefPtr<Gdk::Pixbuf>::cast_const (fractal_pixbuf)->save(fname, "png");
+//		Glib::RefPtr<Gdk::Pixbuf> fractal_pixbuf (_canvas->getImagePixbuf());
+//		Glib::RefPtr<Gdk::Pixbuf>::cast_const (fractal_pixbuf)->save(fname, "png");
 		break;
 	}
 	case (Gtk::RESPONSE_CANCEL): {
