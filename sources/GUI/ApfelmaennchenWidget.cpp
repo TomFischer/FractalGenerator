@@ -14,16 +14,10 @@
 * You should have received a copy of the GNU General Public License along with
 * "FractalGenerator". If not, see <http://www.gnu.org/licenses/>.
 *
-* Author: Thomas Fischer
+* @file ApfelmaennchenWidget.cpp
 *
+*  Created on 02/2005 by Thomas Fischer
 */
-
-/*
- * ApfelmaennchenWidget.cpp
- *
- *  Created on: 02/2005
- *      Author: Thomas Fischer
- */
 
 #include "ApfelmaennchenWidget.h"
 #include "Apfelmaennchen.h"
@@ -144,8 +138,8 @@ void ApfelmaennchenWidget::actualizePointerPosition ( int x, int y )
       num_iter = (*frac)(y,x);
    }
 
-   const std::string label_x(lexical_cast <std::string> (xcoord));
-   const std::string label_y(lexical_cast <std::string> (ycoord));
+   const std::string label_x((lexical_cast <std::string> (xcoord)).substr(0, 8));
+   const std::string label_y((lexical_cast <std::string> (ycoord)).substr(0, 8));
    const std::string label_num_iter(lexical_cast <std::string> (num_iter));
 
    mouse_pos_x.set_text ( label_x.c_str () );
