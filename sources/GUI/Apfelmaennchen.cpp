@@ -53,12 +53,12 @@ void Apfelmaennchen::createFractal ( )
    size_t maxx_pix = matrix.getRows ();
    size_t maxy_pix = matrix.getCols ();
 
-   double x0 = p0[0];
-   double x1 = p1[0];
+   double x0 = _p0[0];
+   double x1 = _p1[0];
    double dx = (x1 - x0) / maxx_pix;
 
-   double y0 = p0[1];
-   double y1 = p1[1];
+   double y0 = _p0[1];
+   double y1 = _p1[1];
    double dy = (y1 - y0) / maxy_pix;
 
    if ((y0 < 0) & (y1 > 0)) {

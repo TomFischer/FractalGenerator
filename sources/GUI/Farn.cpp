@@ -82,8 +82,8 @@ Farn::~Farn ()
 void Farn::createFractal ( )
 {
    double x = 0.0, y = 0.0, summe, xneu, yneu;
-   double xmin = p0[0], ymin = p0[1];
-   double xmax = p1[0], ymax = p1[1];
+   double xmin = _p0[0], ymin = _p0[1];
+   double xmax = _p1[0], ymax = _p1[1];
    size_t k, xs, ys;
    long l;
    size_t dx = getRows (), dy = getCols ();

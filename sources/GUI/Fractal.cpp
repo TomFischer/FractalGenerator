@@ -31,7 +31,7 @@ Fractal::Fractal ( const Point2D &ap0, const Point2D &ap1,
                size_t number_x_pix, size_t number_y_pix, size_t amax_iterations,
                const std::string &name )
       : matrix (number_y_pix, number_x_pix),
-      p0 (ap0), p1 (ap1), fractal_name (name), max_iterations (amax_iterations)
+      _p0 (ap0), _p1 (ap1), fractal_name (name), max_iterations (amax_iterations)
 {}
 
 Fractal::~Fractal ()

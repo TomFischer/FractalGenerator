@@ -45,8 +45,8 @@ JuliaSetWidget::JuliaSetWidget ( ViewerWidget &vw )
       load_btn ("Load Parameters"), hsep0 ()
 {
    // set_shadow_type ( Gtk::SHADOW_IN );
-   point_input_dlg.setCoordinate (0, vw.getFractal()->getFirstPoint()[0]);
-   point_input_dlg.setCoordinate(1, vw.getFractal()->getFirstPoint ()[1]);
+   point_input_dlg.setCoordinate (0, vw.getFractal()->getUpperLeftPoint()[0]);
+   point_input_dlg.setCoordinate(1, vw.getFractal()->getUpperLeftPoint ()[1]);
    point_input_dlg.setNameOfPoint ("start point");
 
    geometry_box.pack_start ( point_input_dlg, Gtk::PACK_SHRINK );
@@ -106,10 +106,10 @@ void JuliaSetWidget::actualizePointerPosition ( int x, int y )
 {
    double p0[2], p1[2];
    Fractal* frac = viewer_widget.getFractal();
-   p0[0] = frac->getFirstPoint()[0];
-   p0[1] = frac->getFirstPoint()[1];
-   p1[0] = frac->getSecondPoint()[0];
-   p1[1] = frac->getSecondPoint()[1];
+   p0[0] = frac->getUpperLeftPoint()[0];
+   p0[1] = frac->getUpperLeftPoint()[1];
+   p1[0] = frac->getLowerRightPoint()[0];
+   p1[1] = frac->getLowerRightPoint()[1];
 
    unsigned x_pix_size = frac->getRows ();
    unsigned y_pix_size = frac->getCols ();
@@ -139,8 +139,8 @@ PointInputDlg& JuliaSetWidget::getPointInputDlg ( unsigned point )
 void JuliaSetWidget::onCoordinateChanged (
    unsigned dim, unsigned x, unsigned y )
 {
-   Point2D const& p0(viewer_widget.getFractal()->getFirstPoint ());
-   Point2D const& p1(viewer_widget.getFractal()->getSecondPoint ());
+   Point2D const& p0(viewer_widget.getFractal()->getUpperLeftPoint ());
+   Point2D const& p1(viewer_widget.getFractal()->getLowerRightPoint ());
 
    unsigned width  = (viewer_widget.getCanvas())->getWidth ();
    unsigned height = (viewer_widget.getCanvas())->getHeight();
