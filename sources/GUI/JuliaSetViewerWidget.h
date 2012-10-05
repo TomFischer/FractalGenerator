@@ -42,7 +42,6 @@ protected:
 	virtual bool processButtonReleaseEvent ( GdkEventButton *event );
 private:
 	JuliaSetWidget _julia_wdgt;
-
 };
 
 } // end namespace GUI
