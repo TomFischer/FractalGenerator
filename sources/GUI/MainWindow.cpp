@@ -14,16 +14,10 @@
 * You should have received a copy of the GNU General Public License along with
 * "FractalGenerator". If not, see <http://www.gnu.org/licenses/>.
 *
-* Author: Thomas Fischer
+* @file MainWindow.cpp
 *
+*  Created on: 07/2004 by Thomas Fischer
 */
-
-/*
- * @file MainWindow.cpp
- *
- *  Created on: 07/2004
- *      Author: Thomas Fischer
- */
 
 #include <iostream>
 
@@ -34,6 +28,7 @@
 #include "ViewerWidget.h"
 #include "MandelbrotSetViewerWidget.h"
 #include "JuliaSetViewerWidget.h"
+#include "FarnViewerWidget.h"
 
 #include <cairommconfig.h>
 #include <cairomm/context.h>
@@ -141,21 +136,21 @@ void MainWindow::addFractal ( Fractal *fractal )
 
 void MainWindow::onCreateFarn()
 {
-//	double pp0[2] = { -0.5, 0.0 }, pp1[2] = { 0.5, 1.1 };
-//	Point2D p0(pp0), p1(pp1);
-//
-//	int wnd_w, wnd_h;
-//	get_size(wnd_w, wnd_h);
-//	int quad_size(0.9 * std::min(wnd_w, wnd_h));
-//
-//	Fractal *fractal(new Farn(quad_size, quad_size, p0, p1));
-//	vw_list.push_back(new ViewerWidget(fractal, *this));
-//	std::list<ViewerWidget*>::iterator it(vw_list.end());
-//	it--;
-//	std::cout << "notebook: appending page ... " << std::flush;
-//	notebook.append_page((*(*it)));
-//	std::cout << "ok " << std::endl;
-//	notebook.show_all ();
+	double pp0[2] = { -0.5, 0.0 }, pp1[2] = { 0.5, 1.1 };
+	Point2D p0(pp0), p1(pp1);
+
+	int wnd_w, wnd_h;
+	get_size(wnd_w, wnd_h);
+	int quad_size(0.9 * std::min(wnd_w, wnd_h));
+
+	Fractal *fractal(new Farn(quad_size, quad_size, p0, p1));
+	vw_list.push_back(new GUI::FarnViewerWidget(fractal, *this));
+	std::list<ViewerWidget*>::iterator it(vw_list.end());
+	it--;
+	std::cout << "notebook: appending page ... " << std::flush;
+	notebook.append_page((*(*it)));
+	std::cout << "ok " << std::endl;
+	notebook.show_all ();
 }
 
 
