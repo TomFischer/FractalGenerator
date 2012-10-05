@@ -41,7 +41,7 @@ PointInputDlg::PointInputDlg ( size_t dim, double *limits )
       add (coordinates[i]);
    }
 
-   label.set_text ("Punkt ");
+   label.set_text ("point ");
    add (label);
 }
 
@@ -50,7 +50,7 @@ PointInputDlg::PointInputDlg ()
 {
    std::cout << std::endl;
 
-   label.set_text ("Punkt");
+   label.set_text ("point");
    add (label);
 
    for (size_t i=0; i<coordinates.size (); ++i) {
@@ -83,7 +83,7 @@ throw (std::range_error)
       ("CoordinateInputDlg::getCoordinate falsche Dimension");
 }
 
-void PointInputDlg::setNameOfPoint ( std::string name )
+void PointInputDlg::setNameOfPoint ( std::string const& name )
 {
    label.set_text ( name.c_str () );
 }

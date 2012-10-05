@@ -14,14 +14,10 @@
 * You should have received a copy of the GNU General Public License along with
 * "FractalGenerator". If not, see <http://www.gnu.org/licenses/>.
 *
+* @file PointInputDlg.h
+*
+*  Created on: 08/2004 by Thomas Fischer
 */
-
-/*
- * @file PointInputDlg.h
- *
- *  Created on: 08/2004
- *      Author: Thomas Fischer
- */
 
 #ifndef _POINTINPUTDLG_H_
 #define _POINTINPUTDLG_H_
@@ -45,7 +41,7 @@ public:
    double getCoordinate ( size_t dim ) const throw (std::range_error);
    void setCoordinate ( size_t dim, double value )
    throw (std::range_error);
-   void setNameOfPoint ( std::string name );
+   void setNameOfPoint ( std::string const& name );
 
 protected:
 
