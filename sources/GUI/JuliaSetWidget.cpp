@@ -30,9 +30,8 @@
 #include "lexical_cast.h"
 
 JuliaSetWidget::JuliaSetWidget ( ViewerWidget &vw )
-      : Gtk::VBox (), viewer_widget (vw),
-      geometry_box (), color_box (),
-      point_input_dlg (),
+      : Gtk::VBox (), viewer_widget (vw), _geometric_properties_frame("geometric properties"),
+      _geometry_box (),
       iteration_depth ("number of iterations"),
       size ("resolution"),
       res_slider (50, 1000, 10),
@@ -44,24 +43,41 @@ JuliaSetWidget::JuliaSetWidget ( ViewerWidget &vw )
       save_btn ("Save Parameters"),
       load_btn ("Load Parameters"), hsep0 ()
 {
-   // set_shadow_type ( Gtk::SHADOW_IN );
-   point_input_dlg.setCoordinate (0, vw.getFractal()->getUpperLeftPoint()[0]);
-   point_input_dlg.setCoordinate(1, vw.getFractal()->getUpperLeftPoint ()[1]);
-   point_input_dlg.setNameOfPoint ("start point");
+	_geometric_properties_frame.add(_geometry_box);
 
-   geometry_box.pack_start ( point_input_dlg, Gtk::PACK_SHRINK );
+	_upper_left_point_input_dlg.setCoordinate (0, vw.getFractal()->getUpperLeftPoint()[0]);
+	_upper_left_point_input_dlg.setCoordinate(1, vw.getFractal()->getUpperLeftPoint()[1]);
+	_upper_left_point_input_dlg.setNameOfPoint ("upper left point");
+
+	_lower_right_point_input_dlg.setCoordinate (0, vw.getFractal()->getLowerRightPoint()[0]);
+	_lower_right_point_input_dlg.setCoordinate(1, vw.getFractal()->getLowerRightPoint()[1]);
+	_lower_right_point_input_dlg.setNameOfPoint ("lower right point");
+
+	_lower_right_point_input_dlg.setCoordinate (0, vw.getFractal()->getLowerRightPoint()[0]);
+	_lower_right_point_input_dlg.setCoordinate(1, vw.getFractal()->getLowerRightPoint()[1]);
+	_lower_right_point_input_dlg.setNameOfPoint ("lower right point");
+
+	JuliaSet const*const julia_set(dynamic_cast<JuliaSet*>(vw.getFractal()));
+	_complex_parameter_input_dlg.setCoordinate (0, julia_set->getComplexParameter()[0]);
+	_complex_parameter_input_dlg.setCoordinate(1, julia_set->getComplexParameter()[1]);
+	_complex_parameter_input_dlg.setNameOfPoint ("complex parameter");
+
+   _geometry_box.pack_start ( _complex_parameter_input_dlg, Gtk::PACK_SHRINK );
+   _geometry_box.pack_start ( _upper_left_point_input_dlg, Gtk::PACK_SHRINK );
+   _geometry_box.pack_start ( _lower_right_point_input_dlg, Gtk::PACK_SHRINK );
+
    // pack iteration-label into box
-   geometry_box.pack_start ( iteration_depth, Gtk::PACK_SHRINK, 10 );
-   res_slider.set_value ( vw.getFractal()->getMaxIterations ());
-   geometry_box.pack_start ( res_slider );
-   // pack resolution-label into box
-   geometry_box.pack_start ( size );
-   size_slider.set_value (vw.getFractal()->getRows ());
-   geometry_box.pack_start ( size_slider );
+   _geometry_box.pack_start ( iteration_depth, Gtk::PACK_SHRINK, 10 );
 
-   pack_start ( geometry_box );
-   pack_start (hsep0);
-   add ( color_box );
+   res_slider.set_value ( vw.getFractal()->getMaxIterations ());
+   _geometry_box.pack_start ( res_slider );
+   // pack resolution-label into box
+   _geometry_box.pack_start ( size );
+   size_slider.set_value (vw.getFractal()->getRows ());
+   _geometry_box.pack_start ( size_slider );
+
+   pack_start(_geometric_properties_frame, Gtk::PACK_SHRINK );
+   pack_start(hsep0);
    num_iter_box.add (num_iter_label);
    pack_start (hsep1);
    mouse_box.add (mouse_pos_x);
@@ -84,12 +100,12 @@ JuliaSetWidget::JuliaSetWidget ( ViewerWidget &vw )
 JuliaSetWidget::~JuliaSetWidget()
 {}
 
-Point2D JuliaSetWidget::getPoint ( size_t num ) const
+Point2D JuliaSetWidget::getComplexParameter() const
 {
    double p[2];
-   p[0] = point_input_dlg.getCoordinate (0);
-   p[1] = point_input_dlg.getCoordinate (1);
-   return Point2D (p);
+   p[0] = _complex_parameter_input_dlg.getCoordinate(0);
+   p[1] = _complex_parameter_input_dlg.getCoordinate(1);
+   return Point2D(p);
 }
 
 size_t JuliaSetWidget::getIterationDepth () const
@@ -131,13 +147,7 @@ void JuliaSetWidget::actualizePointerPosition ( int x, int y )
    num_iter_label.set_text ( label_num_iter.c_str ());
 }
 
-PointInputDlg& JuliaSetWidget::getPointInputDlg ( unsigned point )
-{
-   return point_input_dlg;
-}
-
-void JuliaSetWidget::onCoordinateChanged (
-   unsigned dim, unsigned x, unsigned y )
+void JuliaSetWidget::onCoordinateChanged (unsigned dim, unsigned x, unsigned y )
 {
    Point2D const& p0(viewer_widget.getFractal()->getUpperLeftPoint ());
    Point2D const& p1(viewer_widget.getFractal()->getLowerRightPoint ());
@@ -151,61 +161,10 @@ void JuliaSetWidget::onCoordinateChanged (
    double dx = ((p1[1] - p0[1]) * x) / height;
    dx += p0[1];
 
-   getPointInputDlg (dim).setCoordinate(0, dy);
-   getPointInputDlg (dim).setCoordinate(1, dx);
-
    std::cout << "Button pressed at (" << dy << "," << dx << ")";
    std::cout << std::endl;
 }
 
-guint8* JuliaSetWidget::getData()
-{
-   double *pp0 (new double[2]), *pp1(new double[2]);
-   pp0[0] = -2.0;
-   pp0[1] = -2.0;
-   pp1[0] = 2.0;
-   pp1[1] = 2.0;
-   Point2D p0 (pp0), p1 (pp1);
-   size_t rows(150), cols(150);
-   JuliaSet *js (new JuliaSet (p0, p1, rows, cols, 300));
-
-   size_t nob(3); //number of bytes
-
-   guint8* data = new guint8 [ nob * rows * cols ];
-
-   for (size_t r = 0; r < rows; ++r) {
-      for (size_t c = 0; c < cols; ++c) {
-         if ( (*js)(r,c) < 10 ) {
-            // outer space
-            data[nob * (r * cols + c)] = (4 * (*js)(r,c));
-            data[nob * (r * cols + c) + 1] = (4 * (*js)(r,c));
-            data[nob * (r * cols + c) + 2] = (25 * (*js)(r,c));
-         }
-         if ( 10 <= (*js)(r,c) and (*js)(r,c) < 64) {
-            // border of body
-            data[nob * (r * cols + c)] = 255 - 4 * ((*js)(r,c)-10)-1;
-            data[nob * (r * cols + c) + 1] = 255 - 4 * ((*js)(r,c)-10)-1;
-            data[nob * (r * cols + c) + 2] = 255 - 1 * ((*js)(r,c)-10);
-         }
-         if ( 64 <= (*js)(r,c) and  (*js)(r,c) < 128 ) {
-            data[nob * (r * cols + c)] = 4 * ((*js)(r,c) - 64);
-            data[nob * (r * cols + c) + 1] = 2 * ((*js)(r,c) - 64);
-            data[nob * (r * cols + c) + 2] = ((*js)(r,c) - 64);
-         }
-         if ( (*js)(r,c) >  128) {
-            // body
-            data[nob * (r * cols + c)] = ((*js)(r,c)-128) % 32;
-            data[nob * (r * cols + c) + 1] = ((*js)(r,c)-128) % 255;
-            data[nob * (r * cols + c) + 2] = ((*js)(r,c)-128) % 255;
-         }
-      }
-   }
-
-   delete [] pp0;
-   delete [] pp1;
-   delete js;
-   return data;
-}
 
 
 

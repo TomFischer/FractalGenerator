@@ -54,18 +54,20 @@ public:
    JuliaSetWidget ( ViewerWidget &viewer_widget);
    virtual ~JuliaSetWidget();
 
-   Point2D getPoint (size_t num) const;
    size_t getIterationDepth () const;
    size_t getSize () const;
    void actualizePointerPosition ( int x, int y );
-   PointInputDlg& getPointInputDlg ( unsigned point );
+   Point2D getComplexParameter() const;
    void onCoordinateChanged ( unsigned dim, unsigned x, unsigned y );
 
 private:
-   guint8* getData ();
+//   guint8* getData ();
    ViewerWidget &viewer_widget;
-   Gtk::VBox geometry_box, color_box;
-   PointInputDlg point_input_dlg;
+   Gtk::Frame _geometric_properties_frame;
+   Gtk::VBox _geometry_box;
+   PointInputDlg _complex_parameter_input_dlg;
+   PointInputDlg _upper_left_point_input_dlg;
+   PointInputDlg _lower_right_point_input_dlg;
    Gtk::Label iteration_depth;
    Gtk::Label size;
    Gtk::HScale res_slider;
