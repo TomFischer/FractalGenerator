@@ -36,7 +36,7 @@ JuliaSet::JuliaSet (const Point2D &p0, const Point2D &p1, const Point2D &c,
       : Fractal ( p0, p1, number_x_pix, number_y_pix, max_iterations, std::string ("Julia Set") ),
         _c(c)
 {
-   createFractal ();
+   createFractal();
 }
 
 JuliaSet::~JuliaSet ()
