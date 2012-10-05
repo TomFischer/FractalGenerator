@@ -52,7 +52,6 @@ public:
 
 protected:
    virtual void	on_realize();
-   virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
    virtual bool on_expose_event(GdkEventExpose* event);
 
 private:
