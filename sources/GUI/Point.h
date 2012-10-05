@@ -14,16 +14,10 @@
 * You should have received a copy of the GNU General Public License along with
 * "FractalGenerator". If not, see <http://www.gnu.org/licenses/>.
 *
-* Author: Thomas Fischer
+* @file Point.h
 *
+*  Created on 06/2012 by Author: Thomas Fischer
 */
-
-/*
- * @file Point.h
- *
- *  Created on: 06/2012
- *      Author: Thomas Fischer
- */
 
 #ifndef POINT_H_
 #define POINT_H_
