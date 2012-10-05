@@ -33,26 +33,6 @@ ViewerWidget::ViewerWidget ( Fractal *fractal, MainWindow &parent )
         _canvas ( NULL ),
         _save_img_dlg (new Gtk::FileChooserDialog ( "Save fractal", Gtk::FILE_CHOOSER_ACTION_SAVE ))
 {
-//   if (tof == 0) mbs_wdgt = new ApfelmaennchenWidget ( *this );
-//   else js_wdgt = new JuliaSetWidget (*this);
-//
-//   // make pixbuf from fractal
-//   Glib::RefPtr <Gdk::Pixbuf> pixbuf (Gdk::Pixbuf::create_from_data
-//		(getData (*fractal), Gdk::COLORSPACE_RGB, false, 8, fractal->getCols(),
-//		fractal->getRows (), fractal->getCols() * 3));
-//
-//   // create with this pixbuf a Canvas
-//   canvas = new Canvas ( pixbuf, *this );
-//
-//   // add these Canvas to this widget
-//   hbox.pack_start ( *canvas, Gtk::PACK_SHRINK );
-//
-//   // make and add controls for fractal
-//   if (tof == 0) hbox.pack_start(*mbs_wdgt, Gtk::PACK_EXPAND_PADDING );
-//   else hbox.pack_start(*js_wdgt, Gtk::PACK_EXPAND_PADDING );
-//
-//   pack_start (hbox, Gtk::PACK_SHRINK);
-
    _save_img_dlg->add_button("Cancel", Gtk::RESPONSE_CANCEL);
    _save_img_dlg->add_button("Ok", Gtk::RESPONSE_OK);
 }
@@ -62,7 +42,6 @@ ViewerWidget::~ViewerWidget()
    delete _fractal;
    delete _canvas;
 
-   //if (js_wdgt) delete js_wdgt;
    delete _save_img_dlg;
 }
 
