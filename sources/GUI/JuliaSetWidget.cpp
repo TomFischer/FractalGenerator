@@ -108,6 +108,22 @@ Point2D JuliaSetWidget::getComplexParameter() const
    return Point2D(p);
 }
 
+Point2D JuliaSetWidget::getUpperLeftPoint() const
+{
+	Point2D ret_pnt;
+	ret_pnt[0] = _upper_left_point_input_dlg.getCoordinate(0);
+	ret_pnt[1] = _upper_left_point_input_dlg.getCoordinate(1);
+	return ret_pnt;
+}
+
+Point2D JuliaSetWidget::getLowerRightPoint() const
+{
+	Point2D ret_pnt;
+	ret_pnt[0] = _lower_right_point_input_dlg.getCoordinate(0);
+	ret_pnt[1] = _lower_right_point_input_dlg.getCoordinate(1);
+	return ret_pnt;
+}
+
 size_t JuliaSetWidget::getIterationDepth () const
 {
    return (size_t)res_slider.get_value();

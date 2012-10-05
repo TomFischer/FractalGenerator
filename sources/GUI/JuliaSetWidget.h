@@ -51,13 +51,15 @@ public:
    /// Konstruktor erstellt alle Widgets und ordnet diese innerhalb einer
    /// Gtk::VBox an
    ///
-   JuliaSetWidget ( ViewerWidget &viewer_widget);
+   JuliaSetWidget (ViewerWidget &viewer_widget);
    virtual ~JuliaSetWidget();
 
-   size_t getIterationDepth () const;
-   size_t getSize () const;
+   size_t getIterationDepth() const;
+   size_t getSize() const;
    void actualizePointerPosition ( int x, int y );
    Point2D getComplexParameter() const;
+   Point2D getUpperLeftPoint() const;
+   Point2D getLowerRightPoint() const;
    void onCoordinateChanged ( unsigned dim, unsigned x, unsigned y );
 
 private:
