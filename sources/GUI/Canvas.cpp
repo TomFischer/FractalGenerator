@@ -76,7 +76,6 @@ void Canvas::on_realize()
 
 bool Canvas::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-//	Gdk::Cairo::set_source_pixbuf(cr, _pixbuf_image, 0, 0);
 	cr->rectangle(0, 0, getWidth(), getHeight());
 	cr->fill();
 	cr->paint();
@@ -169,5 +168,7 @@ void Canvas::setImage ( Glib::RefPtr<Gdk::Pixbuf> pixbuf )
 	// draw the image on the context
 	Gdk::Cairo::set_source_pixbuf (_image_context, pixbuf, 0.0, 0.0);
 	_image_context->paint();
+
+	queue_draw();
 }
 
