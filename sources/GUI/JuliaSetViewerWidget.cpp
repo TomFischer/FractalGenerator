@@ -129,22 +129,36 @@ void JuliaSetViewerWidget::onMovie ()
 
 void JuliaSetViewerWidget::onNewViewerWidget()
 {
-	return;
+	Point2D p0(_julia_wdgt.getUpperLeftPoint());
+	Point2D p1(_julia_wdgt.getLowerRightPoint());
+	Point2D complex_param(_julia_wdgt.getComplexParameter());
+	size_t res(_julia_wdgt.getIterationDepth());
+	size_t size(_julia_wdgt.getSize());
+
+	JuliaSet *julia_set(new JuliaSet(p0, p1, complex_param, size, size, res));
+	_parent.addFractal(julia_set);
+
+	// make pixbuf from fractal
+	Glib::RefPtr<Gdk::Pixbuf> pixbuf(Gdk::Pixbuf::create_from_data(getData(
+			*_fractal), Gdk::COLORSPACE_RGB, false, 8, _fractal->getCols(),
+			_fractal->getRows(), _fractal->getCols() * 3));
+	// give the pixbuf to the Canvas
+	_canvas->set_size_request (_fractal->getCols(), _fractal->getRows());
+	_canvas->setImage(pixbuf);
+	show_all();
 }
 
 void JuliaSetViewerWidget::onNewFractal ()
 {
-	Point2D p0(_fractal->getUpperLeftPoint());
-	Point2D p1(_fractal->getLowerRightPoint());
-	Point2D c(dynamic_cast<JuliaSet*>(_fractal)->getComplexParameter());
-
+	Point2D p0(_julia_wdgt.getUpperLeftPoint());
+	Point2D p1(_julia_wdgt.getLowerRightPoint());
+	Point2D complex_param(_julia_wdgt.getComplexParameter());
 	size_t res(_julia_wdgt.getIterationDepth());
 	size_t size(_julia_wdgt.getSize());
 
 	delete _fractal;
-	_fractal = new JuliaSet(p0, p1, c, size, size, res);
-	Point2D const& complex_param(_julia_wdgt.getComplexParameter());
-	dynamic_cast<JuliaSet*>(_fractal)->setComplexParameter(complex_param);
+	_fractal = new JuliaSet(p0, p1, complex_param, size, size, res);
+
 	// make pixbuf from fractal
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf(Gdk::Pixbuf::create_from_data(getData(
 			*_fractal), Gdk::COLORSPACE_RGB, false, 8, _fractal->getCols(),
