@@ -62,12 +62,12 @@ void JuliaSet::createFractal ( )
    const size_t maxx_pix (matrix.getRows ());
    const size_t maxy_pix (matrix.getCols ());
 
-   const double dx ((p1[0] - p0[0]) / maxx_pix);
-   const double dy ((p1[1] - p0[1]) / maxy_pix);
+   const double dx ((_p1[0] - _p0[0]) / maxx_pix);
+   const double dy ((_p1[1] - _p0[1]) / maxy_pix);
 
    for (size_t i0 = 0; i0 < maxx_pix; i0++) {
       for (size_t i1 = 0; i1 < maxy_pix; i1++) {
-         double zn[2] = {p0[0] + i0 * dx, p0[1] + i1 * dy};
+         double zn[2] = {_p0[0] + i0 * dx, _p0[1] + i1 * dy};
          matrix (i0, i1) = iteration (zn);
       }
    }

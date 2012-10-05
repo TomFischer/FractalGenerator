@@ -14,16 +14,10 @@
 * You should have received a copy of the GNU General Public License along with
 * "FractalGenerator". If not, see <http://www.gnu.org/licenses/>.
 *
-* Author: Thomas Fischer
+* @file ApfelmaennchenWidget.cpp
 *
+*  Created on 02/2005 by Thomas Fischer
 */
-
-/*
- * ApfelmaennchenWidget.cpp
- *
- *  Created on: 02/2005
- *      Author: Thomas Fischer
- */
 
 #include "ApfelmaennchenWidget.h"
 #include "Apfelmaennchen.h"
@@ -52,11 +46,11 @@ ApfelmaennchenWidget::ApfelmaennchenWidget ( ViewerWidget &vw )
       movie_btn ("Movie"), hsep0 ()
 {
    // set_shadow_type ( Gtk::SHADOW_IN );
-   left_lower_input_dlg.setCoordinate(0, vw.getFractal()->getFirstPoint()[0]);
-   left_lower_input_dlg.setCoordinate(1, vw.getFractal()->getFirstPoint()[1]);
+   left_lower_input_dlg.setCoordinate(0, vw.getFractal()->getUpperLeftPoint()[0]);
+   left_lower_input_dlg.setCoordinate(1, vw.getFractal()->getUpperLeftPoint()[1]);
    left_lower_input_dlg.setNameOfPoint ("left upper");
-   right_upper_input_dlg.setCoordinate(0, vw.getFractal()->getSecondPoint()[0]);
-   right_upper_input_dlg.setCoordinate(1, vw.getFractal()->getSecondPoint()[1]);
+   right_upper_input_dlg.setCoordinate(0, vw.getFractal()->getLowerRightPoint()[0]);
+   right_upper_input_dlg.setCoordinate(1, vw.getFractal()->getLowerRightPoint()[1]);
    right_upper_input_dlg.setNameOfPoint ("right lower");
 
    geometry_box.pack_start ( left_lower_input_dlg, Gtk::PACK_SHRINK );
@@ -130,8 +124,8 @@ size_t ApfelmaennchenWidget::getSize () const
 void ApfelmaennchenWidget::actualizePointerPosition ( int x, int y )
 {
    Fractal const*const frac (viewer_widget.getFractal());
-   Point2D const& p0(frac->getFirstPoint());
-   Point2D const& p1(frac->getSecondPoint());
+   Point2D const& p0(frac->getUpperLeftPoint());
+   Point2D const& p1(frac->getLowerRightPoint());
 
    const unsigned x_pix_size (frac->getRows ());
    const unsigned y_pix_size (frac->getCols ());
@@ -144,8 +138,8 @@ void ApfelmaennchenWidget::actualizePointerPosition ( int x, int y )
       num_iter = (*frac)(y,x);
    }
 
-   const std::string label_x(lexical_cast <std::string> (xcoord));
-   const std::string label_y(lexical_cast <std::string> (ycoord));
+   const std::string label_x((lexical_cast <std::string> (xcoord)).substr(0, 8));
+   const std::string label_y((lexical_cast <std::string> (ycoord)).substr(0, 8));
    const std::string label_num_iter(lexical_cast <std::string> (num_iter));
 
    mouse_pos_x.set_text ( label_x.c_str () );
@@ -161,8 +155,8 @@ PointInputDlg& ApfelmaennchenWidget::getPointInputDlg ( unsigned point )
 
 void ApfelmaennchenWidget::onCoordinateChanged(unsigned dim, unsigned x, unsigned y)
 {
-	Point2D const &p0(viewer_widget.getFractal()->getFirstPoint());
-	Point2D const &p1(viewer_widget.getFractal()->getSecondPoint());
+	Point2D const &p0(viewer_widget.getFractal()->getUpperLeftPoint());
+	Point2D const &p1(viewer_widget.getFractal()->getLowerRightPoint());
 
 	const unsigned width ((viewer_widget.getCanvas())->getWidth());
 	const unsigned height ((viewer_widget.getCanvas())->getHeight());
@@ -217,16 +211,16 @@ guint8* ApfelmaennchenWidget::getData()
    }
 
    // coordinate transformation
-   double ax (mbs->getFirstPoint()[0]);
-   double bx (mbs->getSecondPoint()[0]);
-   double ay (mbs->getFirstPoint()[1]);
-   double by (mbs->getSecondPoint()[1]);
+   double ax (mbs->getUpperLeftPoint()[0]);
+   double bx (mbs->getLowerRightPoint()[0]);
+   double ay (mbs->getUpperLeftPoint()[1]);
+   double by (mbs->getLowerRightPoint()[1]);
 
    double *dp0 (new double[2]), *dp1(new double[2]); // detail view points
-   dp0[0] = viewer_widget.getFractal()->getFirstPoint()[0];
-   dp0[1] = viewer_widget.getFractal()->getFirstPoint()[1];
-   dp1[0] = viewer_widget.getFractal()->getSecondPoint()[0];
-   dp1[1] = viewer_widget.getFractal()->getSecondPoint()[1];
+   dp0[0] = viewer_widget.getFractal()->getUpperLeftPoint()[0];
+   dp0[1] = viewer_widget.getFractal()->getUpperLeftPoint()[1];
+   dp1[0] = viewer_widget.getFractal()->getLowerRightPoint()[0];
+   dp1[1] = viewer_widget.getFractal()->getLowerRightPoint()[1];
 
    double x0 ((dp0[0]-ax)/(bx-ax));
    double x1 ((dp1[0]-ax)/(bx-ax));

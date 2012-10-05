@@ -63,11 +63,11 @@ public:
    const std::string& getName () const {
       return fractal_name;
    }
-   const Point2D& getFirstPoint () const {
-      return p0;
+   const Point2D& getUpperLeftPoint() const {
+      return _p0;
    }
-   const Point2D& getSecondPoint () const {
-      return p1;
+   const Point2D& getLowerRightPoint () const {
+      return _p1;
    }
    size_t* getData () const;
 
@@ -95,7 +95,11 @@ protected:
     * der gerasterten Fl&auml;che.
     */
    Matrix <size_t> matrix;
-   Point2D p0, p1;
+	/**
+	 * upper left point
+	 */
+   Point2D _p0;
+   Point2D _p1;
    std::string fractal_name;
 
 private:

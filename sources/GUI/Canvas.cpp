@@ -158,14 +158,15 @@ unsigned Canvas::getHeight () const
    return get_height();
 }
 
-//Glib::RefPtr<Gdk::Pixbuf> const Canvas::getImagePixbuf() const
-//{
-//	return _pixbuf_image;
-//}
-
 void Canvas::setImage ( Glib::RefPtr<Gdk::Pixbuf> pixbuf )
 {
-	// Draw the image on the context
+	// create image surface
+	_image_sfc = Cairo::ImageSurface::create(Cairo::FORMAT_RGB24, pixbuf->get_width(), pixbuf->get_height());
+
+	// Create the new Context for the ImageSurface
+	_image_context = Cairo::Context::create (_image_sfc);
+
+	// draw the image on the context
 	Gdk::Cairo::set_source_pixbuf (_image_context, pixbuf, 0.0, 0.0);
 	_image_context->paint();
 }
