@@ -134,25 +134,23 @@ void JuliaSetViewerWidget::onNewViewerWidget()
 
 void JuliaSetViewerWidget::onNewFractal ()
 {
-	Point2D p0;
-	Point2D p1;
-	p0[0] = -2.0;
-	p0[1] = -2.0;
-	p1[0] = 2.0;
-	p1[1] = 2.0;
+	Point2D p0(_fractal->getUpperLeftPoint());
+	Point2D p1(_fractal->getLowerRightPoint());
+	Point2D c(dynamic_cast<JuliaSet*>(_fractal)->getComplexParameter());
 
 	size_t res(_julia_wdgt.getIterationDepth());
 	size_t size(_julia_wdgt.getSize());
 
 	delete _fractal;
-	_fractal = new JuliaSet(p0, p1, size, size, res);
-	Point2D start_pnt(_julia_wdgt.getPoint(0));
-	dynamic_cast<JuliaSet*>(_fractal)->setStartPoint(start_pnt);
+	_fractal = new JuliaSet(p0, p1, c, size, size, res);
+	Point2D const& complex_param(_julia_wdgt.getComplexParameter());
+	dynamic_cast<JuliaSet*>(_fractal)->setComplexParameter(complex_param);
 	// make pixbuf from fractal
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf(Gdk::Pixbuf::create_from_data(getData(
 			*_fractal), Gdk::COLORSPACE_RGB, false, 8, _fractal->getCols(),
 			_fractal->getRows(), _fractal->getCols() * 3));
 	// give the pixbuf to the Canvas
+	_canvas->set_size_request (_fractal->getCols(), _fractal->getRows());
 	_canvas->setImage(pixbuf);
 	show_all();
 }
