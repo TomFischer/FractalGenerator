@@ -22,6 +22,8 @@
 #include <gtkmm/drawingarea.h>
 #include <cairomm/context.h>
 
+#include "Point.h"
+
 namespace GUI {
 
 class SierpinskyCarpetDrawingArea : public Gtk::DrawingArea
@@ -30,6 +32,9 @@ public:
 	SierpinskyCarpetDrawingArea();
 	virtual ~SierpinskyCarpetDrawingArea();
 	virtual bool on_expose_event(GdkEventExpose* event);
+private:
+	void recursiveDescent(Point2D const& upper_left, Point2D const& lower_right, unsigned level, Cairo::RefPtr<Cairo::Context> cr);
+	void drawRectangle(Point2D const& upper_left, Point2D const& lower_right, Cairo::RefPtr<Cairo::Context> cr);
 };
 
 }
