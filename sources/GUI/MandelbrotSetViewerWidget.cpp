@@ -263,6 +263,7 @@ void MandelbrotSetViewerWidget::onNewFractal()
 			*_fractal), Gdk::COLORSPACE_RGB, false, 8, _fractal->getCols(),
 			_fractal->getRows(), _fractal->getCols() * 3));
 	// give the pixbuf to the Canvas
+	_canvas->set_size_request (_fractal->getCols(), _fractal->getRows());
 	_canvas->setImage(pixbuf);
 	// update the FractalWidget
 	_mbs_wdgt->update();
