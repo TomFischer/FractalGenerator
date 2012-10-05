@@ -61,6 +61,7 @@ protected:
 	void addMandelbrotSet();
 	void addJuliaSet();
 	void onCreateFarn();
+	void onCreateSierpinskyCarpet();
 	void onClose();
 	void onQuit();
 	void history();

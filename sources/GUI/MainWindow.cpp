@@ -29,6 +29,7 @@
 #include "MandelbrotSetViewerWidget.h"
 #include "JuliaSetViewerWidget.h"
 #include "FarnViewerWidget.h"
+#include "SierpinskyCarpetViewerWidget.h"
 
 #include <cairommconfig.h>
 #include <cairomm/context.h>
@@ -58,6 +59,11 @@ MainWindow::MainWindow ()
          Gtk::Menu_Helpers::MenuElem("Create _Farn",
                                      Gtk::AccelKey("<control>f"),
                                      sigc::mem_fun (*this, &MainWindow::onCreateFarn) ) );
+
+      menu_list.push_back(
+         Gtk::Menu_Helpers::MenuElem("Create _Sierpinsky carpet",
+                                     Gtk::AccelKey("<control>s"),
+                                     sigc::mem_fun (*this, &MainWindow::onCreateSierpinskyCarpet) ) );
 
       menu_list.push_back ( Gtk::Menu_Helpers::SeparatorElem ()	);
       menu_list.push_back(
@@ -125,13 +131,21 @@ void MainWindow::addMandelbrotSet ()
 
 void MainWindow::addFractal ( Fractal *fractal )
 {
-   vw_list.push_back (new GUI::MandelbrotSetViewerWidget (fractal, *this ));
-   std::list<ViewerWidget*>::iterator it (vw_list.end());
-   it--;
-   std::cout << "notebook: appending page ... " << std::flush;
-   notebook.append_page ((*(*it)));
-   std::cout << "ok " << std::endl;
-   notebook.show_all ();
+	if (dynamic_cast<Apfelmaennchen*>(fractal) != NULL) {
+		vw_list.push_back (new GUI::MandelbrotSetViewerWidget (fractal, *this ));
+	} else {
+		if (dynamic_cast<JuliaSet*>(fractal) != NULL) {
+			vw_list.push_back (new GUI::JuliaSetViewerWidget (fractal, *this ));
+		} else {
+			std::cerr << "MainWindow::addFractal(): case not handled" << std::endl;
+			return;
+		}
+	}
+
+	std::list<ViewerWidget*>::iterator it(vw_list.end());
+	it--;
+	notebook.append_page ((*(*it)));
+	notebook.show_all ();
 }
 
 void MainWindow::onCreateFarn()
@@ -154,6 +168,17 @@ void MainWindow::onCreateFarn()
 }
 
 
+void MainWindow::onCreateSierpinskyCarpet()
+{
+	vw_list.push_back(new GUI::SierpinskyCarpetViewerWidget(NULL, *this));
+	std::list<ViewerWidget*>::iterator it(vw_list.end());
+	it--;
+	std::cout << "notebook: appending page ... " << std::flush;
+	notebook.append_page((*(*it)));
+	std::cout << "ok " << std::endl;
+	notebook.show_all ();
+}
+
 void MainWindow::cleanViewerWidgetList ()
 {
 }
@@ -165,13 +190,16 @@ MainWindow::~MainWindow()
 void MainWindow::addJuliaSet ()
 {
    // spaeter aus dialog auslesen
-   double pp0[2] = {-0.7, 0.25}, pp1[2] = {2.0, 2.0};
-   Point2D p0 (pp0), p1 (pp1);
+   Point2D c, p0, p1;
+   c[0] = -0.72; c[1] = 0.25;
+   p0[0] = -2.0; p0[1] = -2.0;
+   p1[0] = 2.0; p1[1] = 2.0;
 
    int wnd_w, wnd_h;
    get_size ( wnd_w, wnd_h );
+   int quad_size (0.9 * std::min(wnd_w, wnd_h));
 
-   Fractal *fractal (new JuliaSet (p0, p1, 550, 550, 300));
+   Fractal *fractal (new JuliaSet (p0, p1, c, quad_size, quad_size, 300));
    vw_list.push_back (new GUI::JuliaSetViewerWidget (fractal, *this));
    std::list<ViewerWidget*>::iterator it (vw_list.end());
    it--;

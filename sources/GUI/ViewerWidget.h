@@ -47,9 +47,9 @@ public:
    ViewerWidget (Fractal *fractal, MainWindow &parent);
    virtual ~ViewerWidget();
    void onSaveImg ();
-   virtual void onMovie () = 0;
-   virtual void onNewViewerWidget() = 0;
-   virtual void onNewFractal () = 0;
+   virtual void onMovie () {};
+   virtual void onNewViewerWidget() {};
+   virtual void onNewFractal () {};
 
    Fractal* getFractal ();
    Canvas const* getCanvas () const;
@@ -59,12 +59,12 @@ public:
    	 * @param event
    	 * @return
    	 */
-   	virtual bool processMotionNotifyEvent(GdkEventMotion *event) = 0;
-   	virtual bool processButtonPressEvent(GdkEventButton *event) = 0;
-   	virtual bool processButtonReleaseEvent(GdkEventButton *event) = 0;
+   	virtual bool processMotionNotifyEvent(GdkEventMotion *event) { return true; }
+   	virtual bool processButtonPressEvent(GdkEventButton *event) { return true; };
+   	virtual bool processButtonReleaseEvent(GdkEventButton *event) { return true; };
 
 protected:
-   virtual guint8* getData(Fractal const& input_fractal) const = 0;
+   virtual guint8* getData(Fractal const& input_fractal) const {};
 
    MainWindow &_parent;
    /**
