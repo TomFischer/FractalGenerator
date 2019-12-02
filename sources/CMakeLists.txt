@@ -4,10 +4,14 @@ PROJECT (FractalGenerator)
 
 ### CMake includes ###
 INCLUDE(scripts/cmake/Functions.cmake)
+INCLUDE(scripts/cmake/CMakeSetup.cmake)
+INCLUDE(scripts/cmake/CompilerSetup.cmake)
 
 FIND_PACKAGE(PkgConfig)
 
 SET( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin )
+set(CPU_ARCHITECTURE "native" CACHE STRING "Processor architecture, defaults to
+native.")
 
 PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
 
