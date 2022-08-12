@@ -90,7 +90,7 @@ MainWindow::MainWindow ()
    const int screen_width(get_screen()->get_width());
    const int screen_height(get_screen()->get_height());
 
-   set_size_request ( 0.7 * screen_width, 0.6 * screen_height );
+   set_size_request ( 0.5 * screen_width, screen_height );
 
    show_all ();
 }
