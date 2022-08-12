@@ -63,15 +63,13 @@ void ViewerWidget::onSaveImg()
 //				mbs_wdgt->getPoint(1), screen_width, screen_height,
 //				mbs_wdgt->getIterationDepth()));
 //		// make pixbuf from fractal
-//		Glib::RefPtr<Gdk::Pixbuf> tmp_pixbuf(Gdk::Pixbuf::create_from_data(
-//				getData(*tmp_fractal), Gdk::COLORSPACE_RGB, false, 8,
-//				tmp_fractal->getCols(), tmp_fractal->getRows(),
-//				tmp_fractal->getCols() * 3));
-//		tmp_pixbuf->save(fname, "png");
+		Glib::RefPtr<Gdk::Pixbuf> tmp_pixbuf(Gdk::Pixbuf::create_from_data(
+				getData(*_fractal), Gdk::COLORSPACE_RGB, false, 8,
+				_fractal->getCols(), _fractal->getRows(),
+				_fractal->getCols() * 3));
+		tmp_pixbuf->save(fname, "png");
 //		delete tmp_fractal;
 
-//		Glib::RefPtr<Gdk::Pixbuf> fractal_pixbuf (_canvas->getImagePixbuf());
-//		Glib::RefPtr<Gdk::Pixbuf>::cast_const (fractal_pixbuf)->save(fname, "png");
 		break;
 	}
 	case (Gtk::RESPONSE_CANCEL): {
