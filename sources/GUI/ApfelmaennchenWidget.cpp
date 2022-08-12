@@ -36,7 +36,7 @@ ApfelmaennchenWidget::ApfelmaennchenWidget ( ViewerWidget &vw )
       iteration_depth ("number of iterations"),
       size ("resolution"),
       res_slider (50, 1000, 10),
-      size_slider (50, 1000, 1),
+      size_slider (50, 2000, 1),
       mouse_box (), num_iter_box (),
       mouse_pos_x ("0.0"), mouse_pos_y ("0.0"), num_iter_label ("0"),
       overview_img (),
