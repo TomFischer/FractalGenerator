@@ -102,15 +102,15 @@ guint8* MandelbrotSetViewerWidget::getData(Fractal const& input_fractal) const
 			size_t idx((r * cols + c) * nob);
 			switch (h_i) {
 			case 0:
-				data[idx] = static_cast<guint8> (t * 255);
-				data[idx + 1] = static_cast<guint8> (t * 255);
-				data[idx + 2] = static_cast<guint8> (t * 255);
-				break;
+                          data[idx] = static_cast<guint8>(q * 255);
+                          data[idx + 1] = static_cast<guint8>(q * 255);
+                          data[idx + 2] = static_cast<guint8>(q * 255);
+                          break;
 			case 1:
-				data[idx] = static_cast<guint8> (q * 255);
-				data[idx + 1] = static_cast<guint8> (t * 255);
-				data[idx + 2] = static_cast<guint8> (p * 255);
-				break;
+                          data[idx] = static_cast<guint8>(q * 255);
+                          data[idx + 1] = static_cast<guint8>(t * 255);
+                          data[idx + 2] = static_cast<guint8>(p * 255);
+                          break;
 			case 2:
 				data[idx] = static_cast<guint8> (p * 255);
 				data[idx + 1] = static_cast<guint8> (value * 255);
