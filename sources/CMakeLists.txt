@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.23)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.15)
 
 PROJECT (FractalGenerator)
 
@@ -10,7 +10,7 @@ INCLUDE(scripts/cmake/CompilerSetup.cmake)
 FIND_PACKAGE(PkgConfig)
 
 SET( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin )
-#set(CPU_ARCHITECTURE "native" CACHE STRING "Processor architecture, defaults to native.")
+set(CPU_ARCHITECTURE "native" CACHE STRING "Processor architecture, defaults to native.")
 
 PKG_CHECK_MODULES(GTKMM gtkmm-2.4)
 
