@@ -72,7 +72,7 @@ guint8* MandelbrotSetViewerWidget::getData(Fractal const& input_fractal) const
 	// parameters of HSV color space
 	double max_hue(240);
 	double saturation(0.8);
-	double value(0.5);
+	double value(0.8);
 
 	// color transformation
 	double dfrac(max_hue);
@@ -92,8 +92,8 @@ guint8* MandelbrotSetViewerWidget::getData(Fractal const& input_fractal) const
 			double hue (static_cast<double> ((input_fractal(r, c) - min) * dfrac));
 
 			// helpers for transformation to RGB
-			size_t h_i (static_cast<size_t>(floor(hue / 60)));
-			double f (hue/60 - h_i);
+			size_t h_i (static_cast<size_t>(floor(hue / 10)));
+			double f (hue/10 - h_i);
 			double p (value * (1 - saturation));
 			double q (value * (1 - saturation * f));
 			double t (value * (1 - saturation * (1 - f)));
@@ -102,13 +102,13 @@ guint8* MandelbrotSetViewerWidget::getData(Fractal const& input_fractal) const
 			size_t idx((r * cols + c) * nob);
 			switch (h_i) {
 			case 0:
-				data[idx] = static_cast<guint8> (value * 255);
+				data[idx] = static_cast<guint8> (t * 255);
 				data[idx + 1] = static_cast<guint8> (t * 255);
-				data[idx + 2] = static_cast<guint8> (p * 255);
+				data[idx + 2] = static_cast<guint8> (t * 255);
 				break;
 			case 1:
 				data[idx] = static_cast<guint8> (q * 255);
-				data[idx + 1] = static_cast<guint8> (value * 255);
+				data[idx + 1] = static_cast<guint8> (t * 255);
 				data[idx + 2] = static_cast<guint8> (p * 255);
 				break;
 			case 2:
@@ -136,8 +136,36 @@ guint8* MandelbrotSetViewerWidget::getData(Fractal const& input_fractal) const
 				data[idx + 1] = static_cast<guint8> (t * 255);
 				data[idx + 2] = static_cast<guint8> (p * 255);
 				break;
+			case 7:
+				data[idx] = static_cast<guint8> (value * 255);
+				data[idx + 1] = static_cast<guint8> (t * 255);
+				data[idx + 2] = static_cast<guint8> (p * 255);
+				break;
+			case 8:
+				data[idx] = static_cast<guint8> (value * 255);
+				data[idx + 1] = static_cast<guint8> (t * 255);
+				data[idx + 2] = static_cast<guint8> (p * 255);
+				break;
+			case 9:
+				data[idx] = static_cast<guint8> (value * 255);
+				data[idx + 1] = static_cast<guint8> (t * 255);
+				data[idx + 2] = static_cast<guint8> (p * 255);
+				break;
+			case 10:
+				data[idx] = static_cast<guint8> (value * 255);
+				data[idx + 1] = static_cast<guint8> (t * 255);
+				data[idx + 2] = static_cast<guint8> (p * 255);
+				break;
+			case 24:
+				data[idx] = static_cast<guint8> (value * 255);
+				data[idx + 1] = static_cast<guint8> (value * 255);
+				data[idx + 2] = static_cast<guint8> (value * 255);
+				break;
 			default:
-				std::cout << "error computing color value for pixel (" << r << "," << c << "): " << input_fractal(r, c) << ", h_i: " << h_i << std::endl;
+				data[idx] = static_cast<guint8> (value * 255);
+				data[idx + 1] = static_cast<guint8> (value * 255);
+				data[idx + 2] = static_cast<guint8> (value * 255);
+				break;
 			} // end switch
 		}
 	}
