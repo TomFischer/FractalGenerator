@@ -61,9 +61,8 @@ public:
    ~JuliaSet ();
 
    /**
-    * /**
     * Sets the complex parameter of the quadratic polynomial iteration
-	* rule \f$z_{n+1} = z_{n}^2 + c\f$
+    * rule \f$z_{n+1} = z_{n}^2 + c\f$
     * @param c the complex parameter
     */
    void setComplexParameter (Point2D const &c);
