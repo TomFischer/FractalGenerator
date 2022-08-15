@@ -24,9 +24,10 @@
  */
 
 #include "Apfelmaennchen.h"
+#include <chrono>
 #include <exception>
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
 
 Apfelmaennchen::Apfelmaennchen (const Point2D &p0, const Point2D &p1,
 		size_t number_x_pix, size_t number_y_pix, size_t max_iterations)
@@ -45,67 +46,93 @@ Apfelmaennchen::~Apfelmaennchen ()
 
 // momentan stuerzt Algorithmus ab bei folgenden Parametern
 // p0 ( -1.78, 0.03 ) p1 ( -1.72, 0.03 ) size 950
-void Apfelmaennchen::createFractal ( )
+void Apfelmaennchen::createFractal()
 {
-   size_t i0, i1;
-   double c[2];
+    std::chrono::time_point<std::chrono::high_resolution_clock> start =
+        std::chrono::high_resolution_clock::now();
+    size_t i0, i1;
+    double c[2];
 
-   size_t maxx_pix = matrix.getRows ();
-   size_t maxy_pix = matrix.getCols ();
+    size_t maxx_pix = matrix.getRows();
+    size_t maxy_pix = matrix.getCols();
 
-   double x0 = _p0[0];
-   double x1 = _p1[0];
-   double dx = (x1 - x0) / maxx_pix;
+    double x0 = _p0[0];
+    double x1 = _p1[0];
+    double dx = (x1 - x0) / maxx_pix;
 
-   double y0 = _p0[1];
-   double y1 = _p1[1];
-   double dy = (y1 - y0) / maxy_pix;
+    double y0 = _p0[1];
+    double y1 = _p1[1];
+    double dy = (y1 - y0) / maxy_pix;
 
-   if ((y0 < 0) & (y1 > 0)) {
-      size_t sym_idx = size_t(fabs (y0) / dy);
-      if (fabs(y0) < fabs (y1)) {
-         // rechts steht was ueber
-         for (i0 = 0; i0 < maxx_pix; i0++) {
-            for (i1 = sym_idx; i1 < maxy_pix; i1++) {
-               c[0] = x0 + i0 * dx;
-               c[1] = y0 + i1 * dy;
-               matrix (i0, i1) = iteration (c);
+    if ((y0 < 0) & (y1 > 0))
+    {
+        size_t sym_idx = size_t(fabs(y0) / dy);
+        if (fabs(y0) < fabs(y1))
+        {
+            // rechts steht was ueber
+            for (i0 = 0; i0 < maxx_pix; i0++)
+            {
+                for (i1 = sym_idx; i1 < maxy_pix; i1++)
+                {
+                    c[0] = x0 + i0 * dx;
+                    c[1] = y0 + i1 * dy;
+                    matrix(i0, i1) = iteration(c);
+                }
             }
-         }
-         for (i0 = 0; i0 < maxx_pix; i0++) {
-            for (i1 = sym_idx + 1; i1 > 0; i1--) {
-               matrix (i0, i1) = matrix (i0, 2 * sym_idx - i1 + 1);
+            for (i0 = 0; i0 < maxx_pix; i0++)
+            {
+                for (i1 = sym_idx + 1; i1 > 0; i1--)
+                {
+                    matrix(i0, i1) = matrix(i0, 2 * sym_idx - i1 + 1);
+                }
             }
-         }
-      } else {
-         // links steht was ueber oder es herrscht "pure" Symmetrie
-         for (i0 = 0; i0 < maxx_pix; i0++) {
-            for (i1 = 0; i1 <= sym_idx + 1; i1++) {
-               c[0] = x0 + i0 * dx;
-               c[1] = y0 + i1 * dy;
-               matrix (i0, i1) = iteration (c);
+        }
+        else
+        {
+            // links steht was ueber oder es herrscht "pure" Symmetrie
+            for (i0 = 0; i0 < maxx_pix; i0++)
+            {
+                for (i1 = 0; i1 <= sym_idx + 1; i1++)
+                {
+                    c[0] = x0 + i0 * dx;
+                    c[1] = y0 + i1 * dy;
+                    matrix(i0, i1) = iteration(c);
+                }
             }
-         }
-         for (i0 = 0; i0 < maxx_pix; i0++) {
-            for (i1 = sym_idx; i1 < maxy_pix; i1++) {
-               try {
-                  matrix (i0, i1) = matrix (i0, 2 * sym_idx + 1 - i1);
-               } catch (std::range_error &re) {
-                  std::cout << "ERROR " << re.what () << '\t';
-               }
+            for (i0 = 0; i0 < maxx_pix; i0++)
+            {
+                for (i1 = sym_idx; i1 < maxy_pix; i1++)
+                {
+                    try
+                    {
+                        matrix(i0, i1) = matrix(i0, 2 * sym_idx + 1 - i1);
+                    }
+                    catch (std::range_error& re)
+                    {
+                        std::cout << "ERROR " << re.what() << '\t';
+                    }
+                }
             }
-         }
-      }
-   } else {
-      // keine Symmetrie
-      for (i0 = 0; i0 < maxx_pix; i0++) {
-         for (i1 = 0; i1 < maxy_pix; i1++) {
-            c[0] = x0 + i0 * dx;
-            c[1] = y0 + i1 * dy;
-            matrix (i0, i1) = iteration (c);
-         }
-      }
-   }
+        }
+    }
+    else
+    {
+        // keine Symmetrie
+        for (i0 = 0; i0 < maxx_pix; i0++)
+        {
+            for (i1 = 0; i1 < maxy_pix; i1++)
+            {
+                c[0] = x0 + i0 * dx;
+                c[1] = y0 + i1 * dy;
+                matrix(i0, i1) = iteration(c);
+            }
+        }
+    }
+    std::chrono::time_point<std::chrono::high_resolution_clock> end =
+        std::chrono::high_resolution_clock::now();
+    auto duration =
+        std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "Calculation took " << duration << ".\n";
 }
 
 unsigned Apfelmaennchen::iteration (double c[2])
