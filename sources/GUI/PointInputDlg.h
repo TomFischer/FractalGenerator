@@ -38,9 +38,8 @@ public:
    PointInputDlg ();
    ~PointInputDlg();
 
-   double getCoordinate ( size_t dim ) const throw (std::range_error);
-   void setCoordinate ( size_t dim, double value )
-   throw (std::range_error);
+   double getCoordinate(size_t dim) const;
+   void setCoordinate(size_t dim, double value);
    void setNameOfPoint ( std::string const& name );
 
 protected:

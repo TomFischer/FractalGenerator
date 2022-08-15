@@ -54,12 +54,10 @@ public:
    size_t getCols () const {
       return cols;
    }
-   T & operator() (size_t row, size_t col)
-   throw (std::range_error);
-   T & operator() (size_t row, size_t col) const
-   throw (std::range_error);
 //	Matrix<T>& operator= (const Matrix <T>& ) const
 //		throw (std::range_error);
+   T &operator()(size_t row, size_t col);
+   T &operator()(size_t row, size_t col) const;
 
 private:
    size_t rows;

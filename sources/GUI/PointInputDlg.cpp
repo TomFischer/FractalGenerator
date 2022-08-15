@@ -64,7 +64,6 @@ PointInputDlg::~PointInputDlg ()
 {}
 
 double PointInputDlg::getCoordinate (size_t dim) const
-throw (std::range_error)
 {
    if (dim < coordinates.size ())
       return coordinates[dim].getCoordinate ();
@@ -73,8 +72,7 @@ throw (std::range_error)
       ("CoordinateInputDlg::getCoordinate falsche Dimension");
 }
 
-void PointInputDlg::setCoordinate (size_t dim, double value)
-throw (std::range_error)
+void PointInputDlg::setCoordinate(size_t dim, double value)
 {
    if (dim < coordinates.size ())
       return coordinates[dim].setCoordinate ( value );
