@@ -65,11 +65,11 @@ PointInputDlg::~PointInputDlg ()
 
 double PointInputDlg::getCoordinate (size_t dim) const
 {
-   if (dim < coordinates.size ())
-      return coordinates[dim].getCoordinate ();
-   else
-      throw std::range_error
-      ("CoordinateInputDlg::getCoordinate falsche Dimension");
+    if (dim < coordinates.size())
+        return coordinates[dim].getCoordinate();
+    else
+        throw std::range_error(
+            "CoordinateInputDlg::getCoordinate falsche Dimension");
 }
 
 void PointInputDlg::setCoordinate(size_t dim, double value)
@@ -81,7 +81,7 @@ void PointInputDlg::setCoordinate(size_t dim, double value)
       ("CoordinateInputDlg::getCoordinate falsche Dimension");
 }
 
-void PointInputDlg::setNameOfPoint ( std::string const& name )
+void PointInputDlg::setNameOfPoint(std::string const& name)
 {
    label.set_text ( name.c_str () );
 }
