@@ -41,42 +41,39 @@
  *
  * Jedoch machen einige Operationen nur mit numerischen Typen Sinn.
  */
-template <class T> class Matrix
+template <class T>
+class Matrix
 {
 public:
    Matrix (size_t rows, size_t cols);
    Matrix (const Matrix &src);
    ~Matrix ();
 
-   size_t getRows () const {
-      return rows;
-   }
-   size_t getCols () const {
-      return cols;
-   }
-//	Matrix<T>& operator= (const Matrix <T>& ) const
-//		throw (std::range_error);
+   size_t getRows() const { return rows; }
+   size_t getCols() const { return cols; }
    T &operator()(size_t row, size_t col);
    T &operator()(size_t row, size_t col) const;
 
-private:
+ private:
    size_t rows;
    size_t cols;
    T *data;
 };
 
-template<class T> Matrix<T>::Matrix (size_t arows, size_t acols)
-      : rows (arows), cols (acols), data ( new T [rows * cols] )
+template <class T>
+Matrix<T>::Matrix(size_t arows, size_t acols)
+    : rows(arows), cols(acols), data(new T[rows * cols])
 {}
 
-template<class T> Matrix<T>::Matrix (const Matrix& src)
-      : rows (src.getRows ()), cols (src.getCols ()), data (NULL)
+template <class T>
+Matrix<T>::Matrix(const Matrix& src)
+    : rows(src.getRows()), cols(src.getCols()), data(NULL)
 {
-   data = new T[rows * cols];
+    data = new T[rows * cols];
 
-   for ( size_t i = 0; i < rows; i++)
-      for ( size_t j = 0; j < cols; j++)
-         data[i * cols + j] = src (i, j);
+    for (size_t i = 0; i < rows; i++)
+        for (size_t j = 0; j < cols; j++)
+            data[i * cols + j] = src(i, j);
 }
 
 template <class T> Matrix<T>::~Matrix ()
@@ -84,37 +81,19 @@ template <class T> Matrix<T>::~Matrix ()
    delete [] data;
 }
 
-template<class T> T& Matrix<T>::operator() (size_t row,
-      size_t col) throw (std::range_error)
+template <class T>
+T& Matrix<T>::operator()(size_t row, size_t col)
 {
    if ( (row >= rows) | ( col >= cols) )
       throw std::range_error ("Matrix: op() range error");
    return data [row * cols + col];
 }
 
-
-template<class T> T& Matrix<T>::operator() (size_t row,
-      size_t col) const throw (std::range_error)
+template <class T>
+T& Matrix<T>::operator()(size_t row, size_t col) const
 {
-   if ( (row >= rows) | ( col >= cols) )
-      throw std::range_error ("Matrix: op() const range error");
-   return data [row * cols + col];
+    if ((row >= rows) | (col >= cols))
+        throw std::range_error("Matrix: op() const range error");
+    return data[row * cols + col];
 }
-
-/* ??? */
-/*
-template<class T> Matrix<T> & Matrix<T>::operator=
-	(const Matrix <T>& dest) const throw (std::range_error)
-{
-	if ((dest.getRows () != getRows ()) & (dest.getCols () != getCols ()))
-		throw std::range_error ("op() const range error");
-	else {
-		size_t rows = getRows (), cols = getCols ();
-		for (size_t row = 0; row < rows; ++row)
-			for (size_t col = 0; col < cols; ++col)
-				dest (row, col) = operator()(row, col);
-	}
-}
-*/
-
 #endif
