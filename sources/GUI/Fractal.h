@@ -50,7 +50,7 @@ public:
    /** Destruktor der Klasse
     */
    virtual ~Fractal ();
-   const unsigned operator() (size_t row, size_t col) const;
+   unsigned operator() (size_t row, size_t col) const;
    unsigned getMaxIterations () const {
       return max_iterations;
    }

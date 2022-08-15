@@ -37,7 +37,7 @@ Fractal::Fractal ( const Point2D &ap0, const Point2D &ap1,
 Fractal::~Fractal ()
 {}
 
-const unsigned Fractal::operator() (size_t row, size_t col) const
+unsigned Fractal::operator()(size_t row, size_t col) const
 {
    return matrix(row, col);
 }
