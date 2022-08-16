@@ -33,8 +33,6 @@ ViewerWidget::ViewerWidget ( Fractal *fractal, MainWindow &parent )
         _canvas ( NULL ),
         _save_img_dlg (new Gtk::FileChooserDialog ( "Save fractal", Gtk::FILE_CHOOSER_ACTION_SAVE ))
 {
-   _save_img_dlg->add_button("Cancel", Gtk::RESPONSE_CANCEL);
-   _save_img_dlg->add_button("Ok", Gtk::RESPONSE_OK);
 }
 
 ViewerWidget::~ViewerWidget()
