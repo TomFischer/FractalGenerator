@@ -47,38 +47,45 @@ void ViewerWidget::onSaveImg()
 {
 	int res = _save_img_dlg->run();
 
-	switch (res) {
-	case (Gtk::RESPONSE_OK): {
-		_save_img_dlg->hide();
-		std::string fname(_save_img_dlg->get_filename());
+    switch (res)
+    {
+        case (Gtk::RESPONSE_OK):
+        {
+            _save_img_dlg->hide();
+            std::string fname(_save_img_dlg->get_filename());
 
-//		int screen_width(get_screen()->get_width());
-//		int screen_height(get_screen()->get_height());
-//		std::cout << "screen size: " << screen_width << " x " << screen_height
-//				<< std::endl;
-//
-//		Fractal *tmp_fractal(new Apfelmaennchen(mbs_wdgt->getPoint(0),
-//				mbs_wdgt->getPoint(1), screen_width, screen_height,
-//				mbs_wdgt->getIterationDepth()));
-//		// make pixbuf from fractal
-		Glib::RefPtr<Gdk::Pixbuf> tmp_pixbuf(Gdk::Pixbuf::create_from_data(
-				getData(*_fractal), Gdk::COLORSPACE_RGB, false, 8,
-				_fractal->getCols(), _fractal->getRows(),
-				_fractal->getCols() * 3));
-		tmp_pixbuf->save(fname, "png");
-//		delete tmp_fractal;
+            int screen_width(get_screen()->get_width());
+            int screen_height(get_screen()->get_height());
+            std::cout << "screen size: " << screen_width << " x "
+                      << screen_height << std::endl;
 
-		break;
-	}
-	case (Gtk::RESPONSE_CANCEL): {
-		_save_img_dlg->hide();
-		break;
-	}
-	default: {
-		std::cout << "Unexpected button clicked." << std::endl;
-		break;
-	}
-	}
+            Fractal* tmp_fractal(new Apfelmaennchen(
+                _fractal->getUpperLeftPoint(), _fractal->getLowerRightPoint(),
+                3 * _fractal->getCols(), 3 * _fractal->getRows(),
+                _fractal->getMaxIterations()));
+            // make pixbuf from fractal
+            std::cout << "fractal size: " << tmp_fractal->getCols() << " x "
+                      << tmp_fractal->getRows() << std::endl;
+            Glib::RefPtr<Gdk::Pixbuf> tmp_pixbuf(Gdk::Pixbuf::create_from_data(
+                getData(*tmp_fractal), Gdk::COLORSPACE_RGB, false, 8,
+                tmp_fractal->getCols(), tmp_fractal->getRows(),
+                tmp_fractal->getCols() * 3));
+            tmp_pixbuf->save(fname, "png");
+            delete tmp_fractal;
+
+            break;
+        }
+        case (Gtk::RESPONSE_CANCEL):
+        {
+            _save_img_dlg->hide();
+            break;
+        }
+        default:
+        {
+            std::cout << "Unexpected button clicked." << std::endl;
+            break;
+        }
+    }
 }
 
 Fractal* ViewerWidget::getFractal ()
