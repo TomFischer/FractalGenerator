@@ -29,7 +29,6 @@
 #define APFELMAENNCHENWIDGET_H_
 
 #include <gtkmm/box.h>
-#include <gtkmm/frame.h>
 #include <gtkmm/table.h>
 #include <gtkmm/scale.h>
 #include <gtkmm/label.h>
@@ -68,8 +67,7 @@ public:
 private:
    guint8* getData ();
    ViewerWidget &viewer_widget;
-   Gtk::VBox geometry_box, color_box;
-	 Gtk::Frame color_frame;
+   Gtk::VBox geometry_box;
    PointInputDlg left_lower_input_dlg, right_upper_input_dlg;
    Gtk::Label iteration_depth;
    Gtk::Label size;
