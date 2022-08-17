@@ -168,7 +168,7 @@ guint8* ApfelmaennchenWidget::getData()
     Point2D p0{-2.0, -2.0};
     Point2D p1{2.0, 2.0};
     size_t rows(150), cols(150);
-    Apfelmaennchen* mbs(new Apfelmaennchen(p0, p1, rows, cols, 300));
+    Apfelmaennchen const mbs{p0, p1, rows, cols, 300};
 
     size_t nob(3);  // number of bytes
 
@@ -178,85 +178,97 @@ guint8* ApfelmaennchenWidget::getData()
     {
         for (size_t c = 0; c < cols; ++c)
         {
-            if ((*mbs)(r, c) < 10)
+            if (mbs(r, c) < 10)
             {
                 // outer space
-                data[nob * (r * cols + c)] = (4 * (*mbs)(r, c));
-                data[nob * (r * cols + c) + 1] = (4 * (*mbs)(r, c));
-                data[nob * (r * cols + c) + 2] = (25 * (*mbs)(r, c));
+                data[nob * (r * cols + c)] = (4 * mbs(r, c));
+                data[nob * (r * cols + c) + 1] = (4 * mbs(r, c));
+                data[nob * (r * cols + c) + 2] = (25 * mbs(r, c));
             }
-            if (10 <= (*mbs)(r, c) and (*mbs)(r, c) < 64)
+            if (10 <= mbs(r, c) and mbs(r, c) < 64)
             {
                 // border of body
-                data[nob * (r * cols + c)] = 255 - 4 * ((*mbs)(r, c) - 10) - 1;
-                data[nob * (r * cols + c) + 1] =
-                    255 - 4 * ((*mbs)(r, c) - 10) - 1;
-                data[nob * (r * cols + c) + 2] = 255 - 1 * ((*mbs)(r, c) - 10);
+                data[nob * (r * cols + c)] = 255 - 4 * (mbs(r, c) - 10) - 1;
+                data[nob * (r * cols + c) + 1] = 255 - 4 * (mbs(r, c) - 10) - 1;
+                data[nob * (r * cols + c) + 2] = 255 - 1 * (mbs(r, c) - 10);
             }
-            if (64 <= (*mbs)(r, c) and (*mbs)(r, c) < 128)
+            if (64 <= mbs(r, c) and mbs(r, c) < 128)
             {
-                data[nob * (r * cols + c)] = 4 * ((*mbs)(r, c) - 64);
-                data[nob * (r * cols + c) + 1] = 2 * ((*mbs)(r, c) - 64);
-                data[nob * (r * cols + c) + 2] = ((*mbs)(r, c) - 64);
+                data[nob * (r * cols + c)] = 4 * (mbs(r, c) - 64);
+                data[nob * (r * cols + c) + 1] = 2 * (mbs(r, c) - 64);
+                data[nob * (r * cols + c) + 2] = (mbs(r, c) - 64);
             }
-            if ((*mbs)(r, c) > 128)
+            if (mbs(r, c) > 128)
             {
                 // body
-                data[nob * (r * cols + c)] = ((*mbs)(r, c) - 128) % 32;
-                data[nob * (r * cols + c) + 1] = ((*mbs)(r, c) - 128) % 255;
-                data[nob * (r * cols + c) + 2] = ((*mbs)(r, c) - 128) % 255;
+                data[nob * (r * cols + c)] = (mbs(r, c) - 128) % 32;
+                data[nob * (r * cols + c) + 1] = (mbs(r, c) - 128) % 255;
+                data[nob * (r * cols + c) + 2] = (mbs(r, c) - 128) % 255;
             }
         }
-   }
+    }
 
-   // coordinate transformation
-   double ax (mbs->getUpperLeftPoint()[0]);
-   double bx (mbs->getLowerRightPoint()[0]);
-   double ay (mbs->getUpperLeftPoint()[1]);
-   double by (mbs->getLowerRightPoint()[1]);
+    // coordinate transformation
+    double ax(mbs.getUpperLeftPoint()[0]);
+    double bx(mbs.getLowerRightPoint()[0]);
+    double ay(mbs.getUpperLeftPoint()[1]);
+    double by(mbs.getLowerRightPoint()[1]);
 
-   std::array dp0 = {viewer_widget.getFractal()->getUpperLeftPoint()[0],
-                     viewer_widget.getFractal()->getUpperLeftPoint()[1]};
-   std::array dp1 = {viewer_widget.getFractal()->getLowerRightPoint()[0],
-                     viewer_widget.getFractal()->getLowerRightPoint()[1]};
+    std::array dp0 = {viewer_widget.getFractal()->getUpperLeftPoint()[0],
+                      viewer_widget.getFractal()->getUpperLeftPoint()[1]};
+    std::array dp1 = {viewer_widget.getFractal()->getLowerRightPoint()[0],
+                      viewer_widget.getFractal()->getLowerRightPoint()[1]};
 
-   double x0 ((dp0[0]-ax)/(bx-ax));
-   double x1 ((dp1[0]-ax)/(bx-ax));
-   double y0 ((dp0[1]-ay)/(by-ay));
-   double y1 ((dp1[1]-ay)/(by-ay));
+    double x0((dp0[0] - ax) / (bx - ax));
+    double x1((dp1[0] - ax) / (bx - ax));
+    double y0((dp0[1] - ay) / (by - ay));
+    double y1((dp1[1] - ay) / (by - ay));
 
-   unsigned xpix0 (static_cast<unsigned>(x0 * mbs->getRows()));
-   unsigned xpix1 (static_cast<unsigned>(x1*mbs->getRows()-1));
-   unsigned ypix0 (static_cast<unsigned>(y0 * mbs->getCols()));
-   unsigned ypix1 (static_cast<unsigned>(y1 * mbs->getCols()-1));
+    unsigned xpix0(static_cast<unsigned>(x0 * mbs.getRows()));
+    unsigned xpix1(static_cast<unsigned>(x1 * mbs.getRows() - 1));
+    unsigned ypix0(static_cast<unsigned>(y0 * mbs.getCols()));
+    unsigned ypix1(static_cast<unsigned>(y1 * mbs.getCols() - 1));
 
-   std::cout << "(xpix0, ypix0): (" << xpix0 << "," << ypix0 << ")" <<std::endl;
-   std::cout << "(xpix1, ypix1): (" << xpix1 << "," << ypix1 << ")" <<std::endl;
+    std::cout << "(xpix0, ypix0): (" << xpix0 << "," << ypix0 << ")"
+              << std::endl;
+    std::cout << "(xpix1, ypix1): (" << xpix1 << "," << ypix1 << ")"
+              << std::endl;
 
-   // draw
-   for (size_t c=ypix0; c<ypix1; ++c) {
-      data[nob*(xpix0*cols+c)] = data[nob*(xpix0*cols+c)]^255;
-      data[nob*(xpix0*cols+c)+1] = data[nob*(xpix0*cols+c)+1]^255;
-      data[nob*(xpix0*cols+c)+2] = data[nob*(xpix0*cols+c)+2]^255;
-   }
-   for (size_t c=ypix0; c<ypix1; ++c) {
-      data[nob*(xpix1*cols+c)] = data[nob*(xpix1*cols+c)]^255;
-      data[nob*(xpix1*cols+c)+1] = data[nob*(xpix1*cols+c)+1]^255;
-      data[nob*(xpix1*cols+c)+2] = data[nob*(xpix1*cols+c)+2]^255;
-   }
-   for (size_t r=xpix0; r<xpix1; ++r) {
-      data[nob*(r*cols+ypix0)] = data[nob*(r*cols+ypix0)]^255;
-      data[nob*(r*cols+ypix0)+1] = data[nob*(r*cols+ypix0)+1]^255;
-      data[nob*(r*cols+ypix0)+2] = data[nob*(r*cols+ypix0)+2]^255;
-   }
-   for (size_t r=xpix0; r<xpix1; ++r) {
-      data[nob*(r*cols+ypix1)] = data[nob*(r*cols+ypix1)]^255;
-      data[nob*(r*cols+ypix1)+1] = data[nob*(r*cols+ypix1)+1]^255;
-      data[nob*(r*cols+ypix1)+2] = data[nob*(r*cols+ypix1)+2]^255;
-   }
+    // draw
+    for (size_t c = ypix0; c < ypix1; ++c)
+    {
+        data[nob * (xpix0 * cols + c)] = data[nob * (xpix0 * cols + c)] ^ 255;
+        data[nob * (xpix0 * cols + c) + 1] =
+            data[nob * (xpix0 * cols + c) + 1] ^ 255;
+        data[nob * (xpix0 * cols + c) + 2] =
+            data[nob * (xpix0 * cols + c) + 2] ^ 255;
+    }
+    for (size_t c = ypix0; c < ypix1; ++c)
+    {
+        data[nob * (xpix1 * cols + c)] = data[nob * (xpix1 * cols + c)] ^ 255;
+        data[nob * (xpix1 * cols + c) + 1] =
+            data[nob * (xpix1 * cols + c) + 1] ^ 255;
+        data[nob * (xpix1 * cols + c) + 2] =
+            data[nob * (xpix1 * cols + c) + 2] ^ 255;
+    }
+    for (size_t r = xpix0; r < xpix1; ++r)
+    {
+        data[nob * (r * cols + ypix0)] = data[nob * (r * cols + ypix0)] ^ 255;
+        data[nob * (r * cols + ypix0) + 1] =
+            data[nob * (r * cols + ypix0) + 1] ^ 255;
+        data[nob * (r * cols + ypix0) + 2] =
+            data[nob * (r * cols + ypix0) + 2] ^ 255;
+    }
+    for (size_t r = xpix0; r < xpix1; ++r)
+    {
+        data[nob * (r * cols + ypix1)] = data[nob * (r * cols + ypix1)] ^ 255;
+        data[nob * (r * cols + ypix1) + 1] =
+            data[nob * (r * cols + ypix1) + 1] ^ 255;
+        data[nob * (r * cols + ypix1) + 2] =
+            data[nob * (r * cols + ypix1) + 2] ^ 255;
+    }
 
-   delete mbs;
-   return data;
+    return data;
 }
 
 void ApfelmaennchenWidget::update ()
