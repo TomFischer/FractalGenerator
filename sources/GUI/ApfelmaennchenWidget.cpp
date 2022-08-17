@@ -99,15 +99,11 @@ ApfelmaennchenWidget::~ApfelmaennchenWidget()
 Point2D ApfelmaennchenWidget::getPoint ( size_t num ) const
 {
    if (num == 0) {
-      double p[2];
-      p[0]= left_lower_input_dlg.getCoordinate (0);
-      p[1] = left_lower_input_dlg.getCoordinate (1);
-      return Point2D (p);
+       return {left_lower_input_dlg.getCoordinate(0),
+               left_lower_input_dlg.getCoordinate(1)};
    } else {
-      double p[2];
-      p[0] = right_upper_input_dlg.getCoordinate (0);
-      p[1] = right_upper_input_dlg.getCoordinate (1);
-      return Point2D (p);
+       return {right_upper_input_dlg.getCoordinate(0),
+               right_upper_input_dlg.getCoordinate(1)};
    }
 }
 
@@ -169,45 +165,48 @@ void ApfelmaennchenWidget::onCoordinateChanged(unsigned dim, unsigned x, unsigne
 
 guint8* ApfelmaennchenWidget::getData()
 {
-   double *op0 (new double[2]), *op1(new double[2]); // overview points
-   op0[0] = -2.0;
-   op0[1] = -2.0;
-   op1[0] = 2.0;
-   op1[1] = 2.0;
-   Point2D p0 (op0), p1 (op1);
-   size_t rows(150), cols(150);
-   Apfelmaennchen *mbs (new Apfelmaennchen (p0, p1, rows, cols, 300));
+    Point2D p0{-2.0, -2.0};
+    Point2D p1{2.0, 2.0};
+    size_t rows(150), cols(150);
+    Apfelmaennchen* mbs(new Apfelmaennchen(p0, p1, rows, cols, 300));
 
-   size_t nob(3); //number of bytes
+    size_t nob(3);  // number of bytes
 
-   guint8* data = new guint8[nob*rows*cols];
+    guint8* data = new guint8[nob * rows * cols];
 
-   for (size_t r=0; r<rows; ++r) {
-      for (size_t c=0; c<cols; ++c) {
-         if ( (*mbs)(r,c) < 10 ) {
-            // outer space
-            data[nob * (r * cols + c)] = (4 * (*mbs)(r,c));
-            data[nob * (r * cols + c) + 1] = (4 * (*mbs)(r,c));
-            data[nob * (r * cols + c) + 2] = (25 * (*mbs)(r,c));
-         }
-         if ( 10 <= (*mbs)(r,c) and (*mbs)(r,c) < 64) {
-            // border of body
-            data[nob * (r * cols + c)] = 255 - 4 * ((*mbs)(r,c)-10)-1;
-            data[nob * (r * cols + c) + 1] = 255 - 4 * ((*mbs)(r,c)-10)-1;
-            data[nob * (r * cols + c) + 2] = 255 - 1 * ((*mbs)(r,c)-10);
-         }
-         if ( 64 <= (*mbs)(r,c) and  (*mbs)(r,c) < 128 ) {
-            data[nob * (r * cols + c)] = 4 * ((*mbs)(r,c) - 64);
-            data[nob * (r * cols + c) + 1] = 2 * ((*mbs)(r,c) - 64);
-            data[nob * (r * cols + c) + 2] = ((*mbs)(r,c) - 64);
-         }
-         if ( (*mbs)(r,c) >  128) {
-            // body
-            data[nob * (r * cols + c)] = ((*mbs)(r,c)-128) % 32;
-            data[nob * (r * cols + c) + 1] = ((*mbs)(r,c)-128) % 255;
-            data[nob * (r * cols + c) + 2] = ((*mbs)(r,c)-128) % 255;
-         }
-      }
+    for (size_t r = 0; r < rows; ++r)
+    {
+        for (size_t c = 0; c < cols; ++c)
+        {
+            if ((*mbs)(r, c) < 10)
+            {
+                // outer space
+                data[nob * (r * cols + c)] = (4 * (*mbs)(r, c));
+                data[nob * (r * cols + c) + 1] = (4 * (*mbs)(r, c));
+                data[nob * (r * cols + c) + 2] = (25 * (*mbs)(r, c));
+            }
+            if (10 <= (*mbs)(r, c) and (*mbs)(r, c) < 64)
+            {
+                // border of body
+                data[nob * (r * cols + c)] = 255 - 4 * ((*mbs)(r, c) - 10) - 1;
+                data[nob * (r * cols + c) + 1] =
+                    255 - 4 * ((*mbs)(r, c) - 10) - 1;
+                data[nob * (r * cols + c) + 2] = 255 - 1 * ((*mbs)(r, c) - 10);
+            }
+            if (64 <= (*mbs)(r, c) and (*mbs)(r, c) < 128)
+            {
+                data[nob * (r * cols + c)] = 4 * ((*mbs)(r, c) - 64);
+                data[nob * (r * cols + c) + 1] = 2 * ((*mbs)(r, c) - 64);
+                data[nob * (r * cols + c) + 2] = ((*mbs)(r, c) - 64);
+            }
+            if ((*mbs)(r, c) > 128)
+            {
+                // body
+                data[nob * (r * cols + c)] = ((*mbs)(r, c) - 128) % 32;
+                data[nob * (r * cols + c) + 1] = ((*mbs)(r, c) - 128) % 255;
+                data[nob * (r * cols + c) + 2] = ((*mbs)(r, c) - 128) % 255;
+            }
+        }
    }
 
    // coordinate transformation
@@ -216,11 +215,10 @@ guint8* ApfelmaennchenWidget::getData()
    double ay (mbs->getUpperLeftPoint()[1]);
    double by (mbs->getLowerRightPoint()[1]);
 
-   double *dp0 (new double[2]), *dp1(new double[2]); // detail view points
-   dp0[0] = viewer_widget.getFractal()->getUpperLeftPoint()[0];
-   dp0[1] = viewer_widget.getFractal()->getUpperLeftPoint()[1];
-   dp1[0] = viewer_widget.getFractal()->getLowerRightPoint()[0];
-   dp1[1] = viewer_widget.getFractal()->getLowerRightPoint()[1];
+   std::array dp0 = {viewer_widget.getFractal()->getUpperLeftPoint()[0],
+                     viewer_widget.getFractal()->getUpperLeftPoint()[1]};
+   std::array dp1 = {viewer_widget.getFractal()->getLowerRightPoint()[0],
+                     viewer_widget.getFractal()->getLowerRightPoint()[1]};
 
    double x0 ((dp0[0]-ax)/(bx-ax));
    double x1 ((dp1[0]-ax)/(bx-ax));
@@ -257,10 +255,6 @@ guint8* ApfelmaennchenWidget::getData()
       data[nob*(r*cols+ypix1)+2] = data[nob*(r*cols+ypix1)+2]^255;
    }
 
-   delete [] op0;
-   delete [] op1;
-   delete [] dp0;
-   delete [] dp1;
    delete mbs;
    return data;
 }

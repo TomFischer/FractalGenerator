@@ -174,53 +174,52 @@ guint8* MandelbrotSetViewerWidget::getData(Fractal const& input_fractal) const
 
 void MandelbrotSetViewerWidget::onMovie ()
 {
-	Point2D p0 (_mbs_wdgt->getPoint (0));
-   //Point <double, 2> p1 (mbs_wdgt->getPoint (0));
-   Point2D temp1;
-   Point2D temp2;
-   temp1.setCoordinate(0, 2);
-   temp1.setCoordinate(1, 2);
-   temp2.setCoordinate(0, -2);
-   temp2.setCoordinate(1, -2);
-   size_t res (_mbs_wdgt->getIterationDepth ());
-   size_t size (_mbs_wdgt->getSize ());
-   // create a new Fractal
-   Fractal *tf (_fractal);
-   _fractal = new Apfelmaennchen (temp2, temp1, size, size, res);
-   // make pixbuf from fractal
-   Glib::RefPtr <Gdk::Pixbuf> pixbuf (Gdk::Pixbuf::create_from_data
-		(getData (*_fractal), Gdk::COLORSPACE_RGB, false, 8, _fractal->getCols(),
-		_fractal->getRows (), _fractal->getCols() * 3));
+    Point2D p0(_mbs_wdgt->getPoint(0));
+    Point2D temp1{2, 2};
+    Point2D temp2{-2, -2};
+    size_t res(_mbs_wdgt->getIterationDepth());
+    size_t size(_mbs_wdgt->getSize());
+    // create a new Fractal
+    Fractal* tf(_fractal);
+    _fractal = new Apfelmaennchen(temp2, temp1, size, size, res);
+    // make pixbuf from fractal
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf(Gdk::Pixbuf::create_from_data(
+        getData(*_fractal), Gdk::COLORSPACE_RGB, false, 8, _fractal->getCols(),
+        _fractal->getRows(), _fractal->getCols() * 3));
 
-   for (unsigned i=0; i<500; i++) {
-      // save Image
-      std::string fname ("pictures/dump");
-      if (i < 10) fname += "00";
-      else if (i < 100) fname += "0";
-      char txt[255];
-      sprintf( txt, "%d", i );
-      fname += txt;
-      fname += ".jpg";
+    for (unsigned i = 0; i < 500; i++)
+    {
+        // save Image
+        std::string fname("pictures/dump");
+        if (i < 10)
+            fname += "00";
+        else if (i < 100)
+            fname += "0";
+        char txt[255];
+        sprintf(txt, "%d", i);
+        fname += txt;
+        fname += ".jpg";
 
-      temp1.setCoordinate(0, 24*temp1[0]/25.0 + p0[0]/25.0);
-      temp1.setCoordinate(1, 24*temp1[1]/25.0 + p0[1]/25.0);
-      temp2.setCoordinate(0, 24*temp2[0]/25.0 + p0[0]/25.0);
-      temp2.setCoordinate(1, 24*temp2[1]/25.0 + p0[1]/25.0);
-      // create a new Fractal
-      Fractal *tf1 (new Apfelmaennchen (temp2, temp1, size, size, res));
-      std::swap (tf1, _fractal);
-      delete tf1;
-      // make pixbuf from fractal
+        temp1[0] = 24 * temp1[0] / 25.0 + p0[0] / 25.0;
+        temp1[1] = 24 * temp1[1] / 25.0 + p0[1] / 25.0;
+        temp2[0] = 24 * temp2[0] / 25.0 + p0[0] / 25.0;
+        temp2[1] = 24 * temp2[1] / 25.0 + p0[1] / 25.0;
+        // create a new Fractal
+        Fractal* tf1(new Apfelmaennchen(temp2, temp1, size, size, res));
+        std::swap(tf1, _fractal);
+        delete tf1;
+        // make pixbuf from fractal
 
-      guint8* data (getData(*_fractal));
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_data
-                                         (data, Gdk::COLORSPACE_RGB, false, 8, _fractal->getCols(),
-                                          _fractal->getRows (), _fractal->getCols() * 3);
+        guint8* data(getData(*_fractal));
+        Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_data(
+            data, Gdk::COLORSPACE_RGB, false, 8, _fractal->getCols(),
+            _fractal->getRows(), _fractal->getCols() * 3);
 
-      std::cout << "saving " << fname << " ... " << std::flush;
-      try {
-         pixbuf->save (fname, "jpeg");
-      } catch ( Glib::FileError ) {
+        std::cout << "saving " << fname << " ... " << std::flush;
+        try
+        {
+            pixbuf->save(fname, "jpeg");
+        } catch ( Glib::FileError ) {
          std::cout << "Fehler beim Speichern in Datei " << fname << std::endl;
       } catch ( Gdk::PixbufError ) {
          std::cout << "Fehler Gdk::PixbufError " << std::endl;

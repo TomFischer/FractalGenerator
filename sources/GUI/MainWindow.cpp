@@ -111,9 +111,8 @@ void MainWindow::onQuit ()
 void MainWindow::addMandelbrotSet ()
 {
    // spaeter aus dialog auslesen
-   double pp0[2] = {-2.0, -2.0}, pp1[2] = {2.0, 2.0};
-
-   Point2D p0 (pp0), p1 (pp1);
+   Point2D p0{-2.0, -2.0};
+   Point2D p1{2.0, 2.0};
 
    int wnd_w, wnd_h;
    get_size ( wnd_w, wnd_h );
@@ -150,8 +149,8 @@ void MainWindow::addFractal ( Fractal *fractal )
 
 void MainWindow::onCreateFarn()
 {
-	double pp0[2] = { -0.5, 0.0 }, pp1[2] = { 0.5, 1.1 };
-	Point2D p0(pp0), p1(pp1);
+    Point2D p0{-0.5, 0.0};
+    Point2D p1{0.5, 1.1};
 
 	int wnd_w, wnd_h;
 	get_size(wnd_w, wnd_h);
@@ -167,7 +166,6 @@ void MainWindow::onCreateFarn()
 	notebook.show_all ();
 }
 
-
 void MainWindow::onCreateSierpinskyCarpet()
 {
 	vw_list.push_back(new GUI::SierpinskyCarpetViewerWidget(NULL, *this));
@@ -180,10 +178,6 @@ void MainWindow::onCreateSierpinskyCarpet()
 }
 
 void MainWindow::cleanViewerWidgetList ()
-{
-}
-
-MainWindow::~MainWindow()
 {
 }
 

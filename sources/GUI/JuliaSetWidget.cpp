@@ -102,18 +102,14 @@ JuliaSetWidget::~JuliaSetWidget()
 
 Point2D JuliaSetWidget::getComplexParameter() const
 {
-   double p[2];
-   p[0] = _complex_parameter_input_dlg.getCoordinate(0);
-   p[1] = _complex_parameter_input_dlg.getCoordinate(1);
-   return Point2D(p);
+   return {_complex_parameter_input_dlg.getCoordinate(0),
+           _complex_parameter_input_dlg.getCoordinate(1)};
 }
 
 Point2D JuliaSetWidget::getUpperLeftPoint() const
 {
-	Point2D ret_pnt;
-	ret_pnt[0] = _upper_left_point_input_dlg.getCoordinate(0);
-	ret_pnt[1] = _upper_left_point_input_dlg.getCoordinate(1);
-	return ret_pnt;
+    return {_upper_left_point_input_dlg.getCoordinate(0),
+            _upper_left_point_input_dlg.getCoordinate(1)};
 }
 
 Point2D JuliaSetWidget::getLowerRightPoint() const

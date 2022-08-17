@@ -47,7 +47,7 @@ class MainWindow: public Gtk::Window
 {
 public:
 	MainWindow();
-	~MainWindow();
+	~MainWindow() = default;
 
 public:
 	// Methods

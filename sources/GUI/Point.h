@@ -22,8 +22,8 @@
 #ifndef POINT_H_
 #define POINT_H_
 
-#include "TemplatePoint.h"
+#include <array>
 
-typedef TemplatePoint<double,2> Point2D;
+typedef std::array<double, 2> Point2D;
 
 #endif /* POINT_H_ */
