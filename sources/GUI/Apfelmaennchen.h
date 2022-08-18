@@ -63,9 +63,10 @@ public:
 
 private:
    virtual void createFractal ();
-   double normQuadrat (double a[2]);
    unsigned iteration (double zn[2]);
    unsigned iterationOptimized (double zn[2]);
+
+   double zn[2];
    /** Feld speichert die letzten Iterationen um Perioden zu erkennen.
     * */
    const size_t field_size;

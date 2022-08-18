@@ -29,6 +29,11 @@
 #include <iostream>
 #include <stdexcept>
 
+inline double normQuadrat(double a[2])
+{
+    return (a[0] * a[0] + a[1] * a[1]);
+}
+
 Apfelmaennchen::Apfelmaennchen (const Point2D &p0, const Point2D &p1,
 		size_t number_x_pix, size_t number_y_pix, size_t max_iterations)
       : Fractal ( p0, p1, number_x_pix, number_y_pix,
@@ -137,8 +142,6 @@ void Apfelmaennchen::createFractal()
 
 unsigned Apfelmaennchen::iteration (double c[2])
 {
-   double zn[2];
-
    // Startpunkt fuer Iteration fest
    zn[0] = 0.0;
    zn[1] = 0.0;
@@ -160,7 +163,6 @@ unsigned Apfelmaennchen::iteration (double c[2])
 
 unsigned Apfelmaennchen::iterationOptimized (double c[2])
 {
-   double zn[2];
    double my_eps = 1e-7;
 
    // Startpunkt fuer Iteration fest
@@ -200,7 +202,3 @@ unsigned Apfelmaennchen::iterationOptimized (double c[2])
    return i;
 }
 
-double Apfelmaennchen::normQuadrat ( double a[2] )
-{
-   return (a[0] * a[0] + a[1] * a[1]);
-}
