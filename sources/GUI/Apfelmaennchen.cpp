@@ -151,11 +151,10 @@ unsigned Apfelmaennchen::iteration (double c[2])
    for (i = 0; (i < res) && (normQuadrat(zn) < 4.0); ++i)
    {
        // z_{n+1} = z_n^2 + c
-       double real = zn[0] * zn[0] - zn[1] * zn[1] + c[0];
-       double imag = 2 * zn[0] * zn[1] + c[1];
-
+       double const real = zn[0] * zn[0] - zn[1] * zn[1] + c[0];
+       // imaginary part
+       zn[1] = 2 * zn[0] * zn[1] + c[1];
        zn[0] = real;
-       zn[1] = imag;
    }
 
    return i;
