@@ -30,6 +30,11 @@ public:
 	SierpinskyCarpetViewerWidget(Fractal *fractal, MainWindow &parent);
 	virtual ~SierpinskyCarpetViewerWidget();
 
+    guint8* getData([[maybe_unused]] Fractal const& input_fractal) const
+    {
+        return nullptr;
+    }
+
 private:
 	GUI::SierpinskyCarpetDrawingArea _drawing_area;
 

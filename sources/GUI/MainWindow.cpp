@@ -37,39 +37,45 @@
 
 #include <cmath>
 
-MainWindow::MainWindow ()
-      : Gtk::Window (Gtk::WINDOW_TOPLEVEL), main_menu_bar (), fractal_menu (),
-      history_menu (), image_menu (), vbox (), notebook ()
+MainWindow::MainWindow()
+    : Gtk::Window(Gtk::WINDOW_TOPLEVEL),
+      main_menu_bar(),
+      fractal_menu(),
+      history_menu(),
+      image_menu(),
+      notebook(),
+      vbox()
 {
-   add ( vbox );
+    std::list<ViewerWidget*> vw_list;
+    add(vbox);
 
-   { //fractal create menu:
-      Gtk::Menu::MenuList &menu_list = fractal_menu.items ();
-      menu_list.push_back(
-         Gtk::Menu_Helpers::MenuElem("Create _Mandelbrot set",
-                                     Gtk::AccelKey("<control>m"),
-                                     sigc::mem_fun ( *this, &MainWindow::addMandelbrotSet ) ) );
+    {  // fractal create menu:
+        Gtk::Menu::MenuList& menu_list = fractal_menu.items();
+        menu_list.push_back(Gtk::Menu_Helpers::MenuElem(
+            "Create _Mandelbrot set",
+            Gtk::AccelKey("<control>m"),
+            sigc::mem_fun(*this, &MainWindow::addMandelbrotSet)));
 
-      menu_list.push_back(
-         Gtk::Menu_Helpers::MenuElem("Create _Julia set",
-                                     Gtk::AccelKey("<control>j"),
-                                     sigc::mem_fun (*this, &MainWindow::addJuliaSet) ) );
+        menu_list.push_back(Gtk::Menu_Helpers::MenuElem(
+            "Create _Julia set",
+            Gtk::AccelKey("<control>j"),
+            sigc::mem_fun(*this, &MainWindow::addJuliaSet)));
 
-      menu_list.push_back(
-         Gtk::Menu_Helpers::MenuElem("Create _Farn",
-                                     Gtk::AccelKey("<control>f"),
-                                     sigc::mem_fun (*this, &MainWindow::onCreateFarn) ) );
+        menu_list.push_back(Gtk::Menu_Helpers::MenuElem(
+            "Create _Farn",
+            Gtk::AccelKey("<control>f"),
+            sigc::mem_fun(*this, &MainWindow::onCreateFarn)));
 
-      menu_list.push_back(
-         Gtk::Menu_Helpers::MenuElem("Create _Sierpinsky carpet",
-                                     Gtk::AccelKey("<control>s"),
-                                     sigc::mem_fun (*this, &MainWindow::onCreateSierpinskyCarpet) ) );
+        menu_list.push_back(Gtk::Menu_Helpers::MenuElem(
+            "Create _Sierpinsky carpet",
+            Gtk::AccelKey("<control>s"),
+            sigc::mem_fun(*this, &MainWindow::onCreateSierpinskyCarpet)));
 
-      menu_list.push_back ( Gtk::Menu_Helpers::SeparatorElem ()	);
-      menu_list.push_back(
-         Gtk::Menu_Helpers::MenuElem("_Close",
-                                     Gtk::AccelKey("<control>c"),
-                                     sigc::mem_fun (*this, &MainWindow::onClose) ) );
+        menu_list.push_back(Gtk::Menu_Helpers::SeparatorElem());
+        menu_list.push_back(Gtk::Menu_Helpers::MenuElem(
+            "_Close",
+            Gtk::AccelKey("<control>c"),
+            sigc::mem_fun(*this, &MainWindow::onClose)));
    }
 
    // Create the menu bar

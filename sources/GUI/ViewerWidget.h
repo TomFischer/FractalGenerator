@@ -59,21 +59,32 @@ public:
    	 * @param event
    	 * @return
    	 */
-   	virtual bool processMotionNotifyEvent(GdkEventMotion *event) { return true; }
-   	virtual bool processButtonPressEvent(GdkEventButton *event) { return true; };
-   	virtual bool processButtonReleaseEvent(GdkEventButton *event) { return true; };
+   virtual bool processMotionNotifyEvent([[maybe_unused]] GdkEventMotion* event)
+   {
+       return true;
+   }
+   virtual bool processButtonPressEvent([[maybe_unused]] GdkEventButton* event)
+   {
+       return true;
+   };
+   virtual bool processButtonReleaseEvent(
+       [[maybe_unused]] GdkEventButton* event)
+   {
+       return true;
+    };
 
 protected:
-   virtual guint8* getData(Fractal const& input_fractal) const {};
+    virtual guint8* getData(Fractal const& input_fractal) const = 0;
 
-   MainWindow &_parent;
-   /**
-    * horizontal box for depicting the fractal within a canvas object and the fractal settings widget
-    */
-   Gtk::HBox _hbox;
-   Fractal *_fractal;
-   Canvas *_canvas;
-   Gtk::FileChooserDialog *_save_img_dlg;
+    MainWindow& _parent;
+    /**
+     * horizontal box for depicting the fractal within a canvas object and the
+     * fractal settings widget
+     */
+    Gtk::HBox _hbox;
+    Fractal* _fractal;
+    Canvas* _canvas;
+    Gtk::FileChooserDialog* _save_img_dlg;
 };
 
 #endif	//VIEWERWIDGET_H
