@@ -63,8 +63,8 @@ public:
 
 private:
    virtual void createFractal ();
-   unsigned iteration (double zn[2]);
-   unsigned iterationOptimized (double zn[2]);
+   unsigned iteration (double c[2]);
+   unsigned iterationOptimized (double c[2]);
 
    std::array<double, 2> zn;
    /** Feld speichert die letzten Iterationen um Perioden zu erkennen.
