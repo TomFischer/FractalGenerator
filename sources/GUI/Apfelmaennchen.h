@@ -66,7 +66,7 @@ private:
    unsigned iteration (double zn[2]);
    unsigned iterationOptimized (double zn[2]);
 
-   double zn[2];
+   std::array<double, 2> zn;
    /** Feld speichert die letzten Iterationen um Perioden zu erkennen.
     * */
    const size_t field_size;

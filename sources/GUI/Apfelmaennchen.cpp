@@ -29,7 +29,7 @@
 #include <iostream>
 #include <stdexcept>
 
-inline double normQuadrat(double a[2])
+inline double normQuadrat(std::array<double, 2> const& a)
 {
     return (a[0] * a[0] + a[1] * a[1]);
 }
