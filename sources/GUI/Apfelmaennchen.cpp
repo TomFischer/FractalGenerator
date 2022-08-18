@@ -143,18 +143,16 @@ unsigned Apfelmaennchen::iteration (double c[2])
    zn[0] = 0.0;
    zn[1] = 0.0;
 
-   size_t i, res = getMaxIterations ();
-   for (i = 0; (i < res) && (normQuadrat(zn) < 4.0); ++i) {
-      if (normQuadrat (zn) < 4.0) {
-         // z_{n+1} = z_n^2 + c
-         double real = zn[0] * zn[0] - zn[1] * zn[1] + c[0];
-         double imag = 2 * zn[0] * zn[1] + c[1];
+   std::size_t i;
+   std::size_t const res = getMaxIterations();
+   for (i = 0; (i < res) && (normQuadrat(zn) < 4.0); ++i)
+   {
+       // z_{n+1} = z_n^2 + c
+       double real = zn[0] * zn[0] - zn[1] * zn[1] + c[0];
+       double imag = 2 * zn[0] * zn[1] + c[1];
 
-         zn[0] = real;
-         zn[1] = imag;
-      } else {
-         break;
-      }
+       zn[0] = real;
+       zn[1] = imag;
    }
 
    return i;
